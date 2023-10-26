@@ -1,0 +1,10 @@
+# general ignores
+*.env
+.venv
+
+# python ignores
+__pycache__
+.ruff_cache
+
+# django related ignores
+*.sqlite3

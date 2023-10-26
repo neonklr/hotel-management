@@ -1,0 +1,17 @@
+{
+    // python settings
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+        "editor.formatOnSaveMode": "file",
+        "editor.formatOnPaste": true,
+        "editor.formatOnType": false,
+        "editor.tabSize": 4,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true,
+            "source.fixAll": true
+        },
+    },
+
+    "python.analysis.typeCheckingMode": "basic"
+}

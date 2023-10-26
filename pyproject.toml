@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "hotel-management"
+version = "0.0.1"
+description = "A complete hotel management application."
+authors = ["FIL Group 1 Python Grads"]
+readme = "README.md"
+# packages = [{include = "hotel_management"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Django = "^4.2.6"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.9.1"
+ruff = "^0.0.291"
+
+
+[tool.black]
+line-length = 88
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

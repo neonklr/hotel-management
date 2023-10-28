@@ -6,17 +6,25 @@ on:
   pull_request:
     branches: ["release", "develop"]
 
+  push:
+    branches-ignore: ["release", "develop"]
+
 concurrency:
-  group: "${{ github.head_ref }}-${{ github.run_id }}"
+  group: ${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
-  code-quality:
+  code-quality-enforcer:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Set up python
         uses: actions/setup-python@v4
@@ -25,3 +33,9 @@ jobs:
 
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.0
+
+      - name: commit back changed code
+        if: always()
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Code quality enforced [Enforcer Bot]"

@@ -4,22 +4,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name="User",
             fields=[
-                ('name', models.CharField(max_length=255)),
-                ('email', models.EmailField(max_length=255, primary_key=True, serialize=False, unique=True)),
-                ('password', models.CharField(max_length=255)),
-                ('address', models.CharField(max_length=255)),
-                ('phone_number', models.IntegerField()),
-                ('date_of_birth', models.DateField()),
+                ("name", models.CharField(max_length=255)),
+                ("email", models.EmailField(max_length=255, primary_key=True, serialize=False, unique=True)),
+                ("password", models.CharField(max_length=255)),
+                ("address", models.CharField(max_length=255)),
+                ("phone_number", models.IntegerField()),
+                ("date_of_birth", models.DateField()),
             ],
         ),
     ]

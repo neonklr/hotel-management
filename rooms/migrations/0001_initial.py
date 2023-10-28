@@ -4,20 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Room',
+            name="Room",
             fields=[
-                ('room_no', models.IntegerField(primary_key=True, serialize=False, unique=True)),
-                ('room_type', models.CharField(max_length=100)),
-                ('room_price', models.IntegerField()),
-                ('is_available', models.BooleanField(default=True)),
+                ("room_no", models.IntegerField(primary_key=True, serialize=False, unique=True)),
+                ("room_type", models.CharField(max_length=100)),
+                ("room_price", models.IntegerField()),
+                ("is_available", models.BooleanField(default=True)),
             ],
         ),
     ]

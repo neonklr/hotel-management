@@ -6,28 +6,27 @@ import uuid
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('rooms', '0001_initial'),
-        ('users', '0001_initial'),
+        ("rooms", "0001_initial"),
+        ("users", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Reservation',
+            name="Reservation",
             fields=[
-                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('date', models.DateField()),
-                ('booked_from', models.DateTimeField()),
-                ('booked_to', models.DateTimeField()),
-                ('payment_method', models.CharField(max_length=20)),
-                ('payment_amount', models.IntegerField()),
-                ('checked_out', models.BooleanField(default=False)),
-                ('completed', models.BooleanField(default=False)),
-                ('email', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.user')),
-                ('room_no', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rooms.room')),
+                ("uuid", models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ("date", models.DateField()),
+                ("booked_from", models.DateTimeField()),
+                ("booked_to", models.DateTimeField()),
+                ("payment_method", models.CharField(max_length=20)),
+                ("payment_amount", models.IntegerField()),
+                ("checked_out", models.BooleanField(default=False)),
+                ("completed", models.BooleanField(default=False)),
+                ("email", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="users.user")),
+                ("room_no", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="rooms.room")),
             ],
         ),
     ]

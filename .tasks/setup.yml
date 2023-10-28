@@ -1,0 +1,23 @@
+version: "3"
+
+tasks:
+  dev:
+    desc: setup the project in dev / local environment.
+
+    preconditions:
+      - sh: python --version
+        msg: python is not installed. Make sure to install it before proceeding for setup.
+
+    cmds:
+      - pip install poetry
+      - poetry install
+
+  production:
+    desc: setup the project in production environment.
+
+    preconditions:
+      - sh: python --version
+        msg: python is not installed. Make sure to install it before proceeding for setup.
+
+    cmds:
+      - pip install .

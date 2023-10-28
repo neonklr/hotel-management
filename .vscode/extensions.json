@@ -3,6 +3,7 @@
     "ms-python.python",
     "charliemarsh.ruff",
     "njpwerner.autodocstring",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "task.vscode-task"
   ]
 }

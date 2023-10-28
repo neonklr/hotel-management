@@ -1,8 +1,10 @@
 # Create your models here.
-from django.db import models
 import uuid
-from users.models import User
+
+from django.db import models
+
 from rooms.models import Room
+from users.models import User
 
 
 class Reservation(models.Model):
@@ -14,5 +16,5 @@ class Reservation(models.Model):
     email = models.ForeignKey(User, on_delete=models.CASCADE)
     payment_method = models.CharField(max_length=20)
     payment_amount = models.IntegerField()
-    checked_out = models.BooleanField(default=False)
+    checked_out_at = models.DateTimeField(null=True)
     completed = models.BooleanField(default=False)

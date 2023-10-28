@@ -1,10 +1,9 @@
 {
-    "recommendations": [
-        "ms-python.black-formatter",
-        "ms-python.python",
-        "charliemarsh.ruff",
-        "ms-python.vscode-pylance",
-        "njpwerner.autodocstring",
-        "tamasfe.even-better-toml",
-    ]
+  "recommendations": [
+    "ms-python.python",
+    "charliemarsh.ruff",
+    "njpwerner.autodocstring",
+    "esbenp.prettier-vscode",
+    "task.vscode-task"
+  ]
 }

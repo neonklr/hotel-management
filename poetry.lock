@@ -212,7 +212,10 @@ files = [
     {file = "tzdata-2023.3.tar.gz", hash = "sha256:11ef1e08e54acb0d4f95bdb1be05da659673de4acbd21bf9c69e94cc5e907a3a"},
 ]
 
+[extras]
+pre-commit = []
+
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "ec1e5431fcc327c6af4428f01a20dea58ae532b317db5c22d99703035aaef1bd"
+content-hash = "88859d7166eabbbd9dd1a24b657a6b1ab11de99c5e93baf870512a97f0210ed2"

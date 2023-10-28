@@ -1,0 +1,27 @@
+name: CI
+
+# Enable buildkit and let compose use it to speed up image building
+
+on:
+  pull_request:
+    branches: ["release", "develop"]
+
+concurrency:
+  group: "${{ github.head_ref }}-${{ github.run_id }}"
+  cancel-in-progress: true
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code repository
+        uses: actions/checkout@v4
+
+      - name: Set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.0

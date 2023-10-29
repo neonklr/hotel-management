@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "rooms",
     "users",
     "reservation",
+    "home",
 ]
 
 MIDDLEWARE = [
@@ -67,7 +68,7 @@ ROOT_URLCONF = "hotel_management.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -139,6 +140,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+
+if DEBUG:
+    STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Following settings only make sense on production and may break development environments.
 if not DEBUG:

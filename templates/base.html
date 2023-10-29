@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            {% block title %}
+                Hotel Management
+            {% endblock title %}
+        </title>
+        {% block css %}
+            <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}" />
+            <!-- Latest compiled and minified Bootstrap CSS -->
+            <link rel="stylesheet"
+                  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css"
+                  integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA=="
+                  crossorigin="anonymous"
+                  referrerpolicy="no-referrer" />
+            <!-- Third-party CSS libraries go here -->
+            <link href="{% static 'css/base.css' %}" rel="stylesheet" />
+        {% endblock css %}
+        <!-- Placed at the top of the document so pages load faster with defer -->
+        <!-- Bootstrap JS -->
+        {% block javascript %}
+            <script defer
+                    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"
+                    integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g=="
+                    crossorigin="anonymous"
+                    referrerpolicy="no-referrer"></script>
+            <!-- Third-party javascript libraries go here -->
+            <script defer src="{% static 'js/base.js' %}"></script>
+        {% endblock javascript %}
+    </head>
+    <body>
+        {% block navbar %}
+            {% include 'partials/navbar.html' %}
+        {% endblock navbar %}
+        {% block messages %}
+            {% include 'partials/messages.html' %}
+        {% endblock messages %}
+        {% block footer %}
+            {% include 'partials/footer.html' %}
+        {% endblock footer %}
+        <div class="container">
+            {% block content %}
+                <p>Should be overwritten in child templates</p>
+            {% endblock content %}
+        </div>
+    </body>
+</html>

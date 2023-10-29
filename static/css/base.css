@@ -1,0 +1,30 @@
+/* Project specific css goes here. */
+
+#home-footer {
+  background-color: black;
+  width: 100%;
+  text-align: center;
+  color: #ccc;
+  font-size: small;
+}
+
+.navbar {
+  background-color: black !important;
+}
+
+.navbar-toggler {
+  background-color: #00bfff !important;
+}
+
+#home-nav-link {
+  color: white !important;
+}
+
+#logo {
+  float: left;
+  font-size: 1.7em;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  font-weight: bold;
+}

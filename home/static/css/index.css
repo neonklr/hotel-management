@@ -1,0 +1,24 @@
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+}
+
+#home-container {
+  background-image: url("/static/images/home-page-background.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 90%;
+  min-width: 100%;
+  position: absolute;
+  left: 0;
+}
+
+#home-headings {
+  position: absolute;
+  width: 310px;
+  font-size: 25px;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

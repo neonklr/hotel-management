@@ -4,6 +4,7 @@ from django.conf import settings
 
 # Create your views here.
 
+
 def send_email(request):
     subject = "Booking Details"
     message = "Thank You for booking at our hotel. \nYour total paid amount is ---"
@@ -17,6 +18,3 @@ def send_email(request):
 
 # def home(request):
 #     return render(request, "index.html")
-
-
-

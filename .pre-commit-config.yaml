@@ -1,0 +1,33 @@
+default_stages: [commit, push]
+exclude: "^.vscode/|.devcontainer/|.github"
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-json
+      - id: check-yaml
+      - id: check-toml
+      - id: check-xml
+      - id: debug-statements
+      - id: check-builtin-literals
+      - id: check-case-conflict
+      - id: detect-private-key
+      - id: check-docstring-first
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: no-commit-to-branch
+        args: [--branch, release, --branch, develop]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.3
+    hooks:
+      - id: ruff-format
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+
+# sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up-to date
+ci:
+  autoupdate_schedule: weekly
+  skip: []
+  submodules: false

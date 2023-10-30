@@ -1,0 +1,20 @@
+databases:
+  - name: hotel_management
+    databaseName: hotel_management
+    user: hotel_management
+
+services:
+  - type: web
+    name: hotel_management
+    runtime: python
+    buildCommand: "./deploy_build.sh"
+    startCommand: "gunicorn hotel_management.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hotel_management
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4

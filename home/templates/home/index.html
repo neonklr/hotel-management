@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+{% endblock css %}
+{% block content %}
+    <div class="container" id="home-container">
+        <div class="text-center text-white" id="home-headings">
+            <h1 class="display-4 text-white fw-bold" style="font-size: 46px">Welcome</h1>
+            <p class="lead fw-bold" style="color: slategrey; font-style: italic">Enjoy your stay</p>
+            {% if True %}
+                <a href="{% url 'index' %}" class="btn btn-outline-info btn-lg fw-bold">My Feed</a>
+            {% else %}
+                <a href="{% url 'register:index' %}"
+                   class="btn btn-outline-info btn-lg fw-bold">Get Started</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

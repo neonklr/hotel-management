@@ -1,0 +1,73 @@
+body {
+    background-color: #f5f5f5; 
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+
+  .navbar {
+    background-color: #333; 
+    color: #fff;
+  }
+
+  .navbar-brand {
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .navbar-nav .nav-item .nav-link {
+    color: #fff;
+  }
+
+  .card {
+    border: none;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    background-color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 30px;
+  }
+
+  .stars {
+    color: #FFD700; 
+  }
+  .card-title {
+    font-size: 40px;
+    font-weight: bold;
+    margin: 10px 0;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+  }
+  .reserve-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #FFD700; 
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .reserve-button:hover {
+    background-color: #FFDB58; 
+  }
+  
+  .room-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .price {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 10px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);    
+  }
+  
+  .features {
+    margin-top: 10px;
+    font-size: 16px;    
+  }
+
+  .room-heading {
+    font-size: 24px;
+    font-weight: bold;
+  }

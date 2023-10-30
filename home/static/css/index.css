@@ -3,6 +3,10 @@
   background: transparent; /* make scrollbar transparent */
 }
 
+body{
+  background-color: black;
+}
+
 #home-container {
   background-image: url("/static/images/home-page-background.jpg");
   background-position: center center;
@@ -11,7 +15,15 @@
   min-height: 90%;
   min-width: 100%;
   position: absolute;
+  opacity: 0.4;
   left: 0;
+}
+
+.cta{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #home-headings {

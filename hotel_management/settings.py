@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     "users",
     "reservation",
     "home",
-    "dashboard"
+    "dashboard",
 ]
 
 MIDDLEWARE = [

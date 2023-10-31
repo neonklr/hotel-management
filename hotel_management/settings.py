@@ -49,8 +49,7 @@ INSTALLED_APPS = [
     "users",
     "reservation",
     "home",
-    "signup",
-    "login",
+    "get_started",
     "user_profile",
 ]
 

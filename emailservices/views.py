@@ -16,13 +16,14 @@ def send_email(request):
         send_mail(subject, message, from_email, recipient_list)
         print("email sent")
 
-        message = 'Thanks a bunch for booking at our hotel. It means a lot to us, just like you do! '
+        message = "Thanks a bunch for booking at our hotel. It means a lot to us, just like you do! "
 
-        return render(request, "Thankyou.html", {'message': message})
+        return render(request, "Thankyou.html", {"message": message})
 
     except:
-        message = 'Wrong Email Address!!'
-        return render(request, "Error.html", {'message': message})
+        message = "Wrong Email Address!!"
+        return render(request, "Error.html", {"message": message})
+
 
 def cancel_res(request):
     return render(request, "EarlyCancelModal.html")
@@ -50,14 +51,13 @@ def send_refund_email(request):
 
     try:
         send_mail(subject, "", from_email, recipient_list, html_message=message)
-        print('email sent')
-        message = 'Your reservation has been cancelled.'
-        return render(request, "Thankyou.html", {'message': message})
+        print("email sent")
+        message = "Your reservation has been cancelled."
+        return render(request, "Thankyou.html", {"message": message})
 
     except:
-        message = 'Wrong Email Address!!'
-        return render(request, "Error.html", {'message': message})
-
+        message = "Wrong Email Address!!"
+        return render(request, "Error.html", {"message": message})
 
 
 # def home(request):

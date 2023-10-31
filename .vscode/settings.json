@@ -1,24 +1,24 @@
 {
-    // general settings
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // general settings
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+
+  // python settings
+  "[python]": {
     "editor.formatOnSave": true,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.tabSize": 4,
 
-    // python settings
-    "[python]": {
-        "editor.formatOnSave": true,
-        "editor.defaultFormatter": "ms-python.python",
-        "editor.tabSize": 4,
-
-        "editor.codeActionsOnSave": {
-            "source.fixAll": true,
-            "source.organizeImports": true
-        }
-    },
-
-    "python.analysis.typeCheckingMode": "basic",
-
-    // django template settings
-    "[html][django-html][handlebars][hbs][mustache][jinja][jinja-html][nj][njk][nunjucks][twig]": {
-        "editor.defaultFormatter": "monosans.djlint"
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+      "source.organizeImports": true
     }
+  },
+
+  "python.analysis.typeCheckingMode": "basic",
+
+  // django template settings
+  "[html][django-html][handlebars][hbs][mustache][jinja][jinja-html][nj][njk][nunjucks][twig]": {
+    "editor.defaultFormatter": "monosans.djlint"
+  }
 }

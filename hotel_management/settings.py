@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     "get_started",
     "user_profile",
     "dashboard",
-    "dashboard",
 ]
 
 MIDDLEWARE = [

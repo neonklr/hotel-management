@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     "home",
     "get_started",
     "user_profile",
-    'dashboard'
+    "dashboard",
 ]
 
 MIDDLEWARE = [
@@ -163,7 +163,7 @@ if not DEBUG:
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-#Session
+# Session
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_SERIALIZER = "django.contrib.sessions.serializers.JSONSerializer"
 SESSION_COOKIE_NAME = "hotel_management"

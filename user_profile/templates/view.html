@@ -27,7 +27,7 @@ New Reservation
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control" id="password", placeholder="Enter your new password" disabled>
+          <input type="password" class="form-control" id="password", value="{{ user.password }}" disabled>
         </div>
         <div class="mb-3">
           <label for="DateOfBirth" class="form-label">Date of Birth</label>
@@ -39,7 +39,7 @@ New Reservation
         </div>
         <div class="mb-3">
           <label for="Address" class="form-label">Address</label>
-          <input type="text" class="form-control" id="Address" value="{{ user.email }}" disabled>
+          <input type="text" class="form-control" id="Address" value="{{ user.address }}" disabled>
         </div>
         <br>
         <a class="btn btn-primary" href="/user/update">Update My Profile</a>

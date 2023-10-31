@@ -5,6 +5,8 @@ from django.shortcuts import redirect
 
 from users.models import User
 
+from . import logic
+
 
 def signup(request):
     if request.method == "POST":
@@ -33,7 +35,7 @@ def login(request):
         user = User.objects.filter(email=email).filter(password=password).first()
 
         if user:
-            set_session_data(request, "login_token", email)
+            logic.set_session_data(request, "login_token", email)
             messages.success(request, "Logged in successfully")
             return redirect("/dashboard")
         else:
@@ -43,21 +45,6 @@ def login(request):
 
 def logout(request):
     if request.method == "POST":
-        delete_session_data(request, "login_token")
+        logic.delete_session_data(request, "login_token")
         messages.success(request, "Logged out successfully")
         return redirect("/get_started#login-tab-content")
-
-
-# storing the data
-def set_session_data(request, key, value):
-    request.session[key] = value
-
-
-# retreiving the data
-def get_session_data(request, key):
-    return request.session[key]
-
-
-# deleting the data
-def delete_session_data(request, key):
-    return request.session.pop(key, None)

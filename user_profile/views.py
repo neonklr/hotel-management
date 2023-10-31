@@ -1,8 +1,11 @@
 # Create your views here.
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import HttpResponse, redirect, render
+
+from authentication.logic import auth
 from users.models import User
 
 
+@auth(path="/user/update")
 def update_profile(request, user=None):
     if request.method == "GET":
         if user:
@@ -13,6 +16,7 @@ def update_profile(request, user=None):
         return update_profile_logic(request)
 
 
+@auth(path="/user/view")
 def view_profile(request, user=None):
     if user:
         return render(request, "view.html", {"user": user})

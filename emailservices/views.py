@@ -58,5 +58,3 @@ def send_refund_email(request):
     except Exception:
         message = "Wrong Email Address!!"
         return render(request, "Error.html", {"message": message})
-
-

@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class GetStartedConfig(AppConfig):
+class SignupConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "get_started"
+    name = "signup"

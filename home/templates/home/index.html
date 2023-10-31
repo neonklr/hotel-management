@@ -1,15 +1,20 @@
 {% extends "base.html" %}
 {% load static %}
 {% block css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'css/index.css' %}" />
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" />
 {% endblock css %}
 {% block content %}
-<div class="container" id="home-container">
-    <div class="text-center text-white" id="home-headings">
-        <!-- <h1 class="display-4 text-white fw-bold" style="font-size: 46px">Welcome</h1>
+    <div class="container" id="home-container">
+        <div class="text-center text-white" id="home-headings">
+            <!-- <h1 class="display-4 text-white fw-bold" style="font-size: 46px">Welcome</h1>
             <p class="lead fw-bold" style="color: slategrey; font-style: italic">Enjoy your stay</p> -->
+        </div>
     </div>
-</div>
-<a href="/get_started" class="cta btn btn-outline-info btn-lg fw-bold">Get Started</a>
+    {% if True %}
+        <a href="{% url 'index' %}" class="cta btn btn-outline-info btn-lg fw-bold" >Get Started</a>
+    {% else %}
+        <a href="{% url 'register:index' %}"
+           class="cta btn btn-outline-info btn-lg fw-bold">Get Started</a>
+    {% endif %}
 {% endblock content %}

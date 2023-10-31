@@ -133,6 +133,13 @@ a.button:hover {
 }
 
 /* USER (FORM WRAPPER) */
+.messages {
+  /* background-color: red; */
+  color: red;
+  /* border: 2px solid black; */
+  padding: 10px;
+}
+
 .user {
     position: relative;
     z-index: 0;
@@ -1062,10 +1069,25 @@ input {
                     	<div class="tabs-content">
                             <!-- TABS CONTENT LOGIN -->
                     		<div id="login-tab-content" class="active">
-                    			<form class="login-form" action="" method="post">
-                                {% comment %} {% csfr_token %} {% endcomment %}
+                    			<form class="login-form" action="/auth/login/" method="post">
+                                {% csrf_token %} 
                     				<input type="text" class="input" id="user_login" name ="email" autocomplete="off" placeholder="Email ">
                     				<input type="password" class="input" id="user_pass" name="password" autocomplete="off" placeholder="Password">
+                                    {% if messages %}
+                                    <ul class="messages">
+                                        {% for message in messages%}
+                                        {% if message.tags == 'success' %}
+                                        <div class="messages">{{ message }}</div>
+                                        
+                                        {% elif message.tags == 'error' %}
+                                        <div class="messages">{{ message }}</div>
+                                        {% endif %}
+
+                                            
+                                            <!-- !-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> --> 
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
                     				<input type="checkbox" class="checkbox" checked id="remember_me">
                     				{% comment %} <label for="remember_me">Remember me</label> {% endcomment %}
                     				<input type="submit" class="button" value="Login">
@@ -1076,11 +1098,29 @@ input {
                     		</div>
                             <!-- TABS CONTENT SIGNUP -->
                     		<div id="signup-tab-content">
-                    			<form class="signup-form" action="" method="post">
-                                    {% comment %} {% csfr_token %} {% endcomment %}
-                    				<input type="email" class="input" id="user_email"name="user_email" autocomplete="off" placeholder="Email">
+                    			<form class="signup-form" action="/auth/signup/" method="post">
+                                {% csrf_token %}
+                    				<input type="email" class="input" id="user_email" name="user_email" autocomplete="off" placeholder="Email">
                     				<input type="password" class="input" id="user_name" name="user_password" autocomplete="off" placeholder="Password">
                     				<input type="password" class="input" id="user_pass" name="repass" autocomplete="off" placeholder="Re-Enter Password">
+                                    {% if messages %}
+                                    <ul class="messages">
+                                        {% for message in messages%}
+                                        {% if message.tags == 'success' %}
+                                        <div class="messages">{{ message }}</div>
+                                        
+                                        {% elif message.tags == 'info' %}
+                                        <div class="messages">{{ message }}</div>
+                                        {% endif %}
+
+                                            
+                                            <!-- !-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> --> 
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                                    <br>
+                                    <br>
+                                    <br>
                     				<input type="submit" class="button" value="Sign Up">
                     			</form>
                     			<div class="help-action">
@@ -1187,13 +1227,13 @@ $(function() {
 });
 
 // DISABLE SUBMIT FOR DEMO
-$(function() {
-	$('.button').on('click', function(event) {
-		$(this).stop();
-		event.preventDefault();
-		return false;
-	});
-});
+// $(function() {
+// 	$('.button').on('click', function(event) {
+// 		$(this).stop();
+// 		event.preventDefault();
+// 		return false;
+// 	});
+// });
 //# sourceURL=pen.js
 </script>
 </body></html>

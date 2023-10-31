@@ -7,5 +7,5 @@ class User(models.Model):
     email = models.EmailField(max_length=255, primary_key=True, unique=True)
     password = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
-    phone_number = models.IntegerField()
-    date_of_birth = models.DateField()
+    phone_number = models.IntegerField(blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)

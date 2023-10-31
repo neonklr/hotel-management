@@ -20,7 +20,7 @@ def send_email(request):
 
         return render(request, "Thankyou.html", {"message": message})
 
-    except:
+    except Exception:
         message = "Wrong Email Address!!"
         return render(request, "Error.html", {"message": message})
 
@@ -55,7 +55,7 @@ def send_refund_email(request):
         message = "Your reservation has been cancelled."
         return render(request, "Thankyou.html", {"message": message})
 
-    except:
+    except Exception:
         message = "Wrong Email Address!!"
         return render(request, "Error.html", {"message": message})
 

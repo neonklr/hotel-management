@@ -45,12 +45,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "authentication",
     "rooms",
     "users",
     "reservation",
     "home",
-    "signup",
-    "login",
+    "get_started",
+    "user_profile",
+    "dashboard",
 ]
 
 MIDDLEWARE = [
@@ -61,6 +63,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     # Whitenoise middleware
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
@@ -159,3 +162,10 @@ if not DEBUG:
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Session
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+SESSION_SERIALIZER = "django.contrib.sessions.serializers.JSONSerializer"
+SESSION_COOKIE_NAME = "hotel_management"
+SESSION_COOKIE_AGE = 3600
+SESSION_COOKIE_SECURE = True

@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        rel="stylesheet">
+{% endblock css %}
+{% block navbar %}
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">Bloom Stays</a>
+      <button class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#bookNow">Book Now</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">New Reservation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Previous Reservation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">View Profile</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+{% endblock navbar %}
+{% block content %}
+  <div class="container mt-5">
+    <!-- Hotel Info Card -->
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">Bloom Stays</h1>
+        <div class="stars">
+          <i class="fas fa-star checked"></i>
+          <i class="fas fa-star checked"></i>
+          <i class="fas fa-star checked"></i>
+          <i class="fas fa-star checked"></i>
+          <i class="fas fa-star checked"></i>
+        </div>
+        <p class="card-text">Welcome to our luxury hotel. Enjoy your stay in style.</p>
+        <a href="#" class="btn btn-warning float-end reserve-button">Reserve Now</a>
+      </div>
+    </div>
+    <div class="card text-center" id="about">
+      <div class="card-body" style="background-color: black;">
+        <h3 class="card-title"
+            style="font-family: 'Playfair Display', serif;
+                   color: white">A hotel experience to remember.</h3>
+        <p class="card-text" style="color: white;">
+          We strive to offer our sophisticated guests an unforgettable hotel experience,
+          to leave a strong impression having tended to all their needs.
+          We want to earn the “Thank you” we receive from our departing guests,
+          to have them remember us and wish to return in the future.
+          It is both our joy and pride to ensure the all-round satisfaction of our valued guests.
+        </p>
+      </div>
+    </div>
+    <h2 id="bookNow">Room & Rates</h2>
+    <div class="row">
+      <!-- Deluxe Room Card -->
+      <div class="col-md-4">
+        <img src="{% static 'images/deluxe.webp' %}"
+             alt="Deluxe Room"
+             class="room-image">
+        <h2 class="room-heading">Deluxe Room</h2>
+        <p class="features">
+          Features:
+          <ul>
+            <li>King-size bed</li>
+            <li>City view</li>
+            <li>Mini-bar</li>
+            <li>Free Wi-Fi</li>
+          </ul>
+        </p>
+        <p class="price">
+          200 <span>per night</span>
+        </p>
+        <a href="#" class="btn btn-warning">Book Now</a>
+      </div>
+      <!-- Royal Room Card -->
+      <div class="col-md-4">
+        <img src="{% static 'images/royal.jpg' %}"
+             alt="Royal Room"
+             class="room-image">
+        <h2 class="room-heading">Royal Room</h2>
+        <p class="features">
+          Features:
+          <ul>
+            <li>Four-poster king-size bed</li>
+            <li>Private rooftop terrace</li>
+            <li>Personalized butler service</li>
+            <li>Exclusive access to the spa</li>
+          </ul>
+        </p>
+        <p class="price">
+          800 <span>per night</span>
+        </p>
+        <a href="#" class="btn btn-warning">Book Now</a>
+      </div>
+      <!-- Premium Room Card -->
+      <div class="col-md-4">
+        <img src="{% static 'images/premium.jpg' %}"
+             alt="Premium Room"
+             class="room-image">
+        <h2 class="room-heading">Premium Room</h2>
+        <p class="features">
+          Features:
+          <ul>
+            <li>Super king-size bed</li>
+            <li>Panoramic city view</li>
+            <li>In-room jacuzzi</li>
+            <li>Complimentary champagne</li>
+          </ul>
+        </p>
+        <p class="price">
+          400 <span>per night</span>
+        </p>
+        <a href="#" class="btn btn-warning">Book Now</a>
+      </div>
+    </div>
+  </div>
+  <div class="container mt-5" id="location">
+    <div class="row">
+      <div class="col-lg-6">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3268.14929616634!2d135.75281061524032!3d35.00296768035804!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x600108aefb79e44b%3A0x694f41f4c9f57d48!2sMitsui%20Garden%20Hotel%20Kyoto%20Shijo!5e0!3m2!1sen!2sin!4v1598934046377!5m2!1sen!2sin"
+                width="100%"
+                height="400"
+                frameborder="0"
+                style="border:0"
+                allowfullscreen=""
+                aria-hidden="false"
+                tabindex="0"></iframe>
+      </div>
+      <div class="col-lg-6" style="background-color: gray;">
+        <h3 class="card-title"
+            style="font-family: 'Playfair Display', serif;
+                   color: white">Location</h3>
+        <p class="card-text" style="color: white;">
+          Bloom Stays is conveniently located within touching distance to prominent tourist attractions in and around Severny. Our 5-star hotel in Tokyo is also the perfect destination for a blissful getaway from Severny. Enjoy our warm hospitality and service that make you feel at home. Explore the all meals inclusive 4D Travel offer to plan your next stay.
+        </p>
+      </div>
+    </div>
+  </div>
+  <br>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+{% endblock content %}

@@ -4,9 +4,9 @@ from users.models import User
 
 def update_profile(request, user=None):
     if request.method  == "GET":
-        # if user:
-        return render(request, "update.html", {"user": user})
-        # return HttpResponse("<h3>direct access forbidden</h3>")
+        if user:
+            return render(request, "update.html", {"user": user})
+        return HttpResponse("<h3>direct access forbidden</h3>")
     
     elif request.method == "POST":
         return update_profile_logic(request)

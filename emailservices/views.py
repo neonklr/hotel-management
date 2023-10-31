@@ -60,5 +60,3 @@ def send_refund_email(request):
         return render(request, "Error.html", {"message": message})
 
 
-# def home(request):
-#     return render(request, "index.html")

@@ -1070,7 +1070,7 @@ input {
                             <!-- TABS CONTENT LOGIN -->
                     		<div id="login-tab-content" class="active">
                     			<form class="login-form" action="/auth/login/" method="post">
-                                {% csrf_token %} 
+                                {% csrf_token %}
                     				<input type="text" class="input" id="user_login" name ="email" autocomplete="off" placeholder="Email ">
                     				<input type="password" class="input" id="user_pass" name="password" autocomplete="off" placeholder="Password">
                                     {% if messages %}
@@ -1078,13 +1078,13 @@ input {
                                         {% for message in messages%}
                                         {% if message.tags == 'success' %}
                                         <div class="messages">{{ message }}</div>
-                                        
+
                                         {% elif message.tags == 'error' %}
                                         <div class="messages">{{ message }}</div>
                                         {% endif %}
 
-                                            
-                                            <!-- !-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> --> 
+
+                                            <!-- !-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> -->
                                         {% endfor %}
                                     </ul>
                                 {% endif %}
@@ -1108,13 +1108,13 @@ input {
                                         {% for message in messages%}
                                         {% if message.tags == 'success' %}
                                         <div class="messages">{{ message }}</div>
-                                        
+
                                         {% elif message.tags == 'info' %}
                                         <div class="messages">{{ message }}</div>
                                         {% endif %}
 
-                                            
-                                            <!-- !-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> --> 
+
+                                            <!-- !-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> -->
                                         {% endfor %}
                                     </ul>
                                 {% endif %}

@@ -6,38 +6,6 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
         rel="stylesheet">
 {% endblock css %}
-{% block navbar %}
-  <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-      <a class="navbar-brand" href="#">Bloom Stays</a>
-      <button class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarNav"
-              aria-controls="navbarNav"
-              aria-expanded="false"
-              aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#bookNow">Book Now</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">New Reservation</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Previous Reservations</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/user/view">View Profile</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-{% endblock navbar %}
 {% block content %}
   <div class="container mt-5">
     <!-- Hotel Info Card -->
@@ -52,7 +20,7 @@
           <i class="fas fa-star checked"></i>
         </div>
         <p class="card-text">Welcome to our luxury hotel. Enjoy your stay in style.</p>
-        <a href="#" class="btn btn-warning float-end reserve-button">Reserve Now</a>
+        <a href="/reservations/new" class="btn btn-warning float-end reserve-button">Reserve Now</a>
       </div>
     </div>
     <div class="card text-center" id="about">
@@ -87,7 +55,7 @@
           </ul>
         </p>
         <p class="price">
-          200 <span>per night</span>
+          Rs. 2000 <span>per day</span>
         </p>
         <a href="#" class="btn btn-warning">Book Now</a>
       </div>
@@ -107,7 +75,7 @@
           </ul>
         </p>
         <p class="price">
-          800 <span>per night</span>
+          Rs. 10000 <span>per day</span>
         </p>
         <a href="#" class="btn btn-warning">Book Now</a>
       </div>
@@ -127,7 +95,7 @@
           </ul>
         </p>
         <p class="price">
-          400 <span>per night</span>
+          Rs. 6000 <span>per day</span>
         </p>
         <a href="#" class="btn btn-warning">Book Now</a>
       </div>

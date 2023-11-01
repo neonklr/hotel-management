@@ -25,4 +25,5 @@ urlpatterns = [
     path("user/", include("user_profile.urls"), name="user_profile"),
     path("dashboard/", include("dashboard.urls"), name="dashboard"),
     path("emailapp/", include("emailservices.urls")),
+    path("reservation/", include("reservation.urls"), name="reservation"),
 ]

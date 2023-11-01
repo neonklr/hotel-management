@@ -90,6 +90,9 @@ TEMPLATES = [
 WSGI_APPLICATION = "hotel_management.wsgi.application"
 
 
+TEMPLATE_CONTEXT_PROCESSORS = ("django.core.context_processors.request",)
+
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 

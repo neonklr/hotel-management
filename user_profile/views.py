@@ -5,25 +5,26 @@ from authentication.logic import auth
 from users.models import User
 
 
-@auth(path="/user/update")
-def update_profile(request, user=None):
+@auth(by_pass_route=True)
+def update_profile(request):
     if request.method == "GET":
-        if user:
-            return render(request, "update.html", {"user": user})
+        if request.user:
+            return render(request, "update.html", {"user": request.user})
         return HttpResponse("<h3>direct access forbidden</h3>")
 
     elif request.method == "POST":
         return update_profile_logic(request)
 
 
-@auth(path="/user/view")
-def view_profile(request, user=None):
-    if user:
-        return render(request, "view.html", {"user": user})
+@auth()
+def view_profile(request):
+    if request.user:
+        return render(request, "view.html", {"user": request.user})
 
     return HttpResponse("<h3>direct access forbidden</h3>")
 
 
+@auth(by_pass_route=True)
 def update_profile_logic(request):
     data = {
         "name": request.POST["name"],

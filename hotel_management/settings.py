@@ -168,11 +168,11 @@ if not DEBUG:
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Session
-SESSION_ENGINE = "django.contrib.sessions.backends.db"
-SESSION_SERIALIZER = "django.contrib.sessions.serializers.JSONSerializer"
-SESSION_COOKIE_NAME = "hotel_management"
-SESSION_COOKIE_AGE = 3600
-SESSION_COOKIE_SECURE = True
+# SESSION_ENGINE = "django.contrib.sessions.backends.db"
+# SESSION_SERIALIZER = "django.contrib.sessions.serializers.JSONSerializer"
+# SESSION_COOKIE_NAME = "hotel_management"
+# SESSION_COOKIE_AGE = 3600
+# SESSION_COOKIE_SECURE = True
 
 # EmailService SMTP setup
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

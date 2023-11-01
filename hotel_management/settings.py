@@ -89,9 +89,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "hotel_management.wsgi.application"
 
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-  'django.core.context_processors.request',
-)
+TEMPLATE_CONTEXT_PROCESSORS = ("django.core.context_processors.request",)
 
 
 # Database

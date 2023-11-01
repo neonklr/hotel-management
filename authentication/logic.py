@@ -11,7 +11,7 @@ def set_session_data(request, key, value):
 
 # retreiving the data
 def get_session_data(request, key):
-    return request.session[key]
+    return request.session.get(key, False)
 
 
 # deleting the data
@@ -25,7 +25,7 @@ def profile_is_empty(user):
     )
 
 
-def auth(path):
+def auth(by_pass_route=False):
     def outer_function(func):
         def inner_function(request, *args, **kwargs):
             user = None
@@ -37,13 +37,16 @@ def auth(path):
                 messages.error(request, "Please login to continue...")
                 return redirect("/get_started#login-tab-content")
 
-            if path == "/user/update":
-                return func(request, *args, user=user, **kwargs)
+            request.user = user
+
+            if by_pass_route:
+                return func(request, *args, **kwargs)
 
             if profile_is_empty(user):
                 return redirect("/user/update")
 
-            return func(request, *args, user=user, **kwargs)
+
+            return func(request, *args, **kwargs)
 
         return inner_function
 

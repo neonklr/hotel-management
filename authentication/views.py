@@ -7,8 +7,10 @@ from users.models import User
 
 from . import logic
 
-
 def signup(request):
+    if logic.get_session_data(request, "login_token"):
+        return redirect("/dashboard")
+        
     if request.method == "POST":
         email = request.POST.get("user_email")
         password = request.POST.get("user_password")
@@ -23,11 +25,14 @@ def signup(request):
             return redirect("/get_started#login-tab-content")
 
         User(email=email, password=password).save()
-
+        logic.set_session_data(request, "login_token", email)
+        messages.success(request, "Logged in successfully")
         return redirect("/dashboard")
 
-
 def login(request):
+    if logic.get_session_data(request, "login_token"):
+        return redirect("/dashboard")
+
     if request.method == "POST":
         email = request.POST["email"]
         password = request.POST["password"]
@@ -42,9 +47,8 @@ def login(request):
             messages.error(request, "Inavlid Credentials")
             return redirect("/get_started#login-tab-content")
 
-
+@logic.auth()
 def logout(request):
-    if request.method == "POST":
-        logic.delete_session_data(request, "login_token")
-        messages.success(request, "Logged out successfully")
-        return redirect("/get_started#login-tab-content")
+    logic.delete_session_data(request, "login_token")
+    messages.success(request, "Logged out successfully")
+    return redirect("/get_started#login-tab-content")

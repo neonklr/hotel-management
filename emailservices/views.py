@@ -58,8 +58,9 @@ def send_refund_email(request):
         message = "Wrong Email Address!!"
         return render(request, "Error.html", {"message": message})
 
+
 def checkout_email(request):
-    user_email = 'ujjwalj12222@gmail.com'
+    user_email = "ujjwalj12222@gmail.com"
 
     booking_date_str = "2023-11-05"
     checkout_date_str = str(datetime.today().date())

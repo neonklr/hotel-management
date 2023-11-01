@@ -57,3 +57,35 @@ def send_refund_email(request):
     except Exception:
         message = "Wrong Email Address!!"
         return render(request, "Error.html", {"message": message})
+
+def checkout_email(request):
+    user_email = 'ujjwalj12222@gmail.com'
+
+    booking_date_str = "2023-11-05"
+    checkout_date_str = str(datetime.today().date())
+    perDayPrice = 2000
+
+    booking_date = datetime.strptime(booking_date_str, "%Y-%m-%d")
+    checkout_date = datetime.strptime(checkout_date_str, "%Y-%m-%d")
+
+    date_difference = booking_date - checkout_date
+    totalDays = date_difference.days
+
+    paidAmount = totalDays * perDayPrice
+
+    customer_name = "Ujjwal Jamuar"
+
+    subject = "Checkout Confirmed"
+    message = f"<strong>Dear {customer_name}, <br><br>We hope you have had a pleasant stay with us at Bloom Stays, and we appreciate your choice in selecting our hotel for your accommodation. We are writing to confirm that your check-out has been successfully processed. <br>Here are the details of your check-out: <br><br>Check-Out Date: {checkout_date} <br><br>Total Paid-Amount - {paidAmount} <br><br>Final Bill: Your final bill has been settled with the payment method provided during your check-in, and all charges, including room charges, taxes, and any additional expenses, have been accurately reflected in the bill. <br>We trust that you found your stay comfortable and that our services met your expectations. Your satisfaction is of utmost importance to us, and we are delighted to have had the opportunity to serve you. <br><br>If you have any questions or require a copy of your final invoice, please do not hesitate to reach out to our front desk staff, who will be more than happy to assist you. <br><br>Once again, we thank you for choosing [Hotel Name], and we look forward to welcoming you back in the future. Your feedback and experience with us are invaluable as we continually strive to provide exceptional service to our guests. <br><br>Safe travels, and we hope to see you again soon. <br><br>Warm regards, <br><br>Bloom Stays <br>+91 111 222 0000 </strong>"
+    from_email = settings.EMAIL_HOST_USER
+    recipient_list = [user_email]
+
+    try:
+        send_mail(subject, "", from_email, recipient_list, html_message=message)
+        print("email sent")
+        message = "Checkout Confirmed."
+        return render(request, "Thankyou.html", {"message": message})
+
+    except Exception:
+        message = "Something went wrong or Email Address is incorrect!!"
+        return render(request, "Error.html", {"message": message})

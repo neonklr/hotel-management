@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class EmailservicesConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'emailservices'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "emailservices"

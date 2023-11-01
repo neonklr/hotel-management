@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     "get_started",
     "user_profile",
     "dashboard",
-    'emailservices',
+    "emailservices",
 ]
 
 MIDDLEWARE = [

@@ -23,6 +23,7 @@ def view_profile(request):
 
     return HttpResponse("<h3>direct access forbidden</h3>")
 
+
 @auth(by_pass_route=True)
 def update_profile_logic(request):
     data = {

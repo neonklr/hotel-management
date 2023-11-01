@@ -45,7 +45,6 @@ def auth(by_pass_route=False):
             if profile_is_empty(user):
                 return redirect("/user/update")
 
-
             return func(request, *args, **kwargs)
 
         return inner_function

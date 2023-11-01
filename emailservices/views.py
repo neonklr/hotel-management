@@ -5,6 +5,7 @@ from datetime import datetime
 
 # Create your views here
 
+
 def send_email(request):
     subject = "Booking Confirmed"
     message = "Thank You for booking at our hotel. \nYour total paid amount is ---"

@@ -11,8 +11,9 @@ import os
 
 # Create your views here
 
+
 def generate_invoice(customer_name, room_type, price, days):
-    current_directory = os.getcwd() + '/emailservices/'
+    current_directory = os.getcwd() + "/emailservices/"
 
     # Define the PDF filename and path
     pdf_filename = os.path.join(current_directory, "invoice.pdf")
@@ -23,93 +24,101 @@ def generate_invoice(customer_name, room_type, price, days):
 
     # Define the stylesheet
     styles = getSampleStyleSheet()
-    styles['Normal'].fontName = 'SourceSansPro'
-    styles['Normal'].fontSize = 11
-    
-    styles.add(ParagraphStyle(name='Salutation',  fontSize=40, spaceAfter=12))
-    styles.add(ParagraphStyle(name='Address',  fontSize=11, leading=14))
-    styles.add(ParagraphStyle(name='TableHeader',  fontSize=10, alignment=1, textColor=colors.HexColor('#a9a')))
-    styles.add(ParagraphStyle(name='TableValue',  fontSize=11, alignment=1, leading=14))
+    styles["Normal"].fontName = "SourceSansPro"
+    styles["Normal"].fontSize = 11
+
+    styles.add(ParagraphStyle(name="Salutation", fontSize=40, spaceAfter=12))
+    styles.add(ParagraphStyle(name="Address", fontSize=11, leading=14))
+    styles.add(ParagraphStyle(name="TableHeader", fontSize=10, alignment=1, textColor=colors.HexColor("#a9a")))
+    styles.add(ParagraphStyle(name="TableValue", fontSize=11, alignment=1, leading=14))
 
     # Title
-    elements.append(Paragraph("Bloom ❄️ Stays", styles['Title']))
+    elements.append(Paragraph("Bloom ❄️ Stays", styles["Title"]))
     elements.append(Spacer(1, 12))
 
-    
     elements.append(Spacer(1, 24))
 
     # Informations
     information_data = [
-        ('Customer Name',customer_name),
+        ("Customer Name", customer_name),
         ("Invoice number", "12345"),
         ("Date", str(datetime.today().date())),
-        ("Time", str(datetime.now().strftime('%H:%M')))
+        ("Time", str(datetime.now().strftime("%H:%M"))),
     ]
     information_table = Table(information_data, colWidths=[1 * inch, 2 * inch])
-    information_table.setStyle(TableStyle([
-        # ('FONTNAME', (0, 0), (-1, -1), 'SourceSansPro'),
-        ('FONTSIZE', (0, 0), (-1, -1), 11),
-        ('ALIGN', (0, 0), (0, -1), 'LEFT'),
-        ('ALIGN', (1, 0), (1, -1), 'RIGHT'),
-    ]))
+    information_table.setStyle(
+        TableStyle(
+            [
+                # ('FONTNAME', (0, 0), (-1, -1), 'SourceSansPro'),
+                ("FONTSIZE", (0, 0), (-1, -1), 11),
+                ("ALIGN", (0, 0), (0, -1), "LEFT"),
+                ("ALIGN", (1, 0), (1, -1), "RIGHT"),
+            ]
+        )
+    )
     elements.append(information_table)
     elements.append(Spacer(1, 72))
 
     # Items
     item_data = [
         ["Description", "Price", "Days", "Subtotal"],
-        [room_type, price, days, price*days],
+        [room_type, price, days, price * days],
     ]
     item_table = Table(item_data, colWidths=[4.5 * inch, 1 * inch, 1 * inch, 1.5 * inch])
-    item_table.setStyle(TableStyle([
-        # ('FONTNAME', (0, 0), (-1, -1), 'SourceSansPro'),
-        ('FONTSIZE', (0, 0), (-1, -1), 11),
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#f6f6f6')),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.HexColor('#a9a')),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('ALIGN', (0, 0), (-1, 0), 'LEFT'),
-        ('ALIGN', (1, 0), (-1, -1), 'RIGHT'),
-        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('GRID', (0, 0), (-1, -1), 0.5, colors.black)
-    ]))
+    item_table.setStyle(
+        TableStyle(
+            [
+                # ('FONTNAME', (0, 0), (-1, -1), 'SourceSansPro'),
+                ("FONTSIZE", (0, 0), (-1, -1), 11),
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#f6f6f6")),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.HexColor("#a9a")),
+                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                ("ALIGN", (0, 0), (-1, 0), "LEFT"),
+                ("ALIGN", (1, 0), (-1, -1), "RIGHT"),
+                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                ("GRID", (0, 0), (-1, -1), 0.5, colors.black),
+            ]
+        )
+    )
     elements.append(item_table)
     elements.append(Spacer(1, 60))
 
     # Total
-    total_data = [
-        ["Paid On", "Paid by", "Total Amount"],
-        [str(datetime.today().date()), customer_name, price*days]
-    ]
+    total_data = [["Paid On", "Paid by", "Total Amount"], [str(datetime.today().date()), customer_name, price * days]]
     total_table = Table(total_data, colWidths=[2 * inch, 2 * inch, 2 * inch])
-    total_table.setStyle(TableStyle([
-        # ('FONTNAME', (0, 0), (-1, -1), 'SourceSansPro'),
-        ('FONTSIZE', (0, 0), (-1, -1), 11),
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#f6f6f6')),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.HexColor('#a9a')),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('ALIGN', (0, 0), (-1, 0), 'LEFT'),
-        ('ALIGN', (1, 0), (-1, -1), 'LEFT'),
-        ('ALIGN', (2, 0), (-1, -1), 'RIGHT'),
-        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('GRID', (0, 0), (-1, -1), 0.5, colors.black)
-    ]))
+    total_table.setStyle(
+        TableStyle(
+            [
+                # ('FONTNAME', (0, 0), (-1, -1), 'SourceSansPro'),
+                ("FONTSIZE", (0, 0), (-1, -1), 11),
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#f6f6f6")),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.HexColor("#a9a")),
+                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                ("ALIGN", (0, 0), (-1, 0), "LEFT"),
+                ("ALIGN", (1, 0), (-1, -1), "LEFT"),
+                ("ALIGN", (2, 0), (-1, -1), "RIGHT"),
+                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                ("GRID", (0, 0), (-1, -1), 0.5, colors.black),
+            ]
+        )
+    )
     elements.append(total_table)
 
     elements.append(Spacer(1, 60))
 
-    thank_you_text = Paragraph("Thank you for choosing Bloom Stays Hotel!", styles['Title'])
+    thank_you_text = Paragraph("Thank you for choosing Bloom Stays Hotel!", styles["Title"])
 
     elements.append(thank_you_text)
 
     doc.build(elements)
 
-def checkin_send_email(request):
 
-    customer_name = 'Ujjwal Jamuar'
-    room_type = 'Deluxe'
+def checkin_send_email(request):
+    customer_name = "Ujjwal Jamuar"
+    room_type = "Deluxe"
     price = 2000
     days = 2
-    
+
     subject = "Booking Confirmed"
     message = f"""<strong>Dear {customer_name},<br><br>
                 We are delighted to confirm your upcoming check-in at Bloom Stays on {datetime.today().date()}. We look forward to providing you with a comfortable and enjoyable stay. <br><br>
@@ -143,9 +152,9 @@ def checkin_send_email(request):
         generate_invoice(customer_name, room_type, price, days)
 
         # send_mail(subject, message, from_email, recipient_list)
-        mail = EmailMessage(subject=subject, body= message, from_email=from_email, to=recipient_list)
-        mail.content_subtype = 'html'
-        mail.attach_file(f'{settings.BASE_DIR}/emailservices/invoice.pdf')
+        mail = EmailMessage(subject=subject, body=message, from_email=from_email, to=recipient_list)
+        mail.content_subtype = "html"
+        mail.attach_file(f"{settings.BASE_DIR}/emailservices/invoice.pdf")
 
         mail.send()
         print("email sent")
@@ -156,6 +165,7 @@ def checkin_send_email(request):
 
     except Exception as e:
         return render(request, "Error.html", {"message": e})
+
 
 def cancel_res(request):
     return render(request, "EarlyCancelModal.html")

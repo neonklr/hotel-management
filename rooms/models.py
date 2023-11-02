@@ -9,4 +9,3 @@ class Room(models.Model):
     # booked_from=models.DateTimeField(null=True,blank=True)
     # booked_to=models.DateTimeField(null=True,blank=True)
     is_available = models.BooleanField(default=True)
-

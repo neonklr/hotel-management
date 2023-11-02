@@ -65,6 +65,7 @@ def calculate_available_rooms_by_room_type(start_time, end_time):
         available_rooms_count[room_type_name] = available_count
     return available_rooms_count
 
+
 # Logic for booking rooms
 def book_rooms(request):
     # room = Room.objects.get(pk="room_no")

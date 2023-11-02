@@ -45,15 +45,15 @@ def send_refund_email(request):
     customer_name = "Ujjwal Jamuar"
 
     subject = "Booking Cancelled"
-    message = f"""<strong>We wanted to confirm that we have received your request to cancel your reservation with us. 
+    message = f"""<strong>We wanted to confirm that we have received your request to cancel your reservation with us.
                 We understand that sometimes plans change, and we're here to assist you with this process.<br><br>
                 Here are the details of your canceled reservation: <br>Reservation ID: [Reservation ID]<br>Customer Name: {customer_name}<br>
                 Reservation Date: {booking_till_str}<br>
                 Cancellation Date: {checkout_date_str}<br>
                 Refund Amount: {refundAmount}<br><br>
-                If you have any questions or require any further assistance regarding your cancellation or potential rebooking, 
-                please don't hesitate to contact our customer service team at [Customer Service Email] or [Customer Service Phone Number]. 
-                We're here to help and ensure your experience with us is as smooth as possible.Thank you for considering our services, 
+                If you have any questions or require any further assistance regarding your cancellation or potential rebooking,
+                please don't hesitate to contact our customer service team at [Customer Service Email] or [Customer Service Phone Number].
+                We're here to help and ensure your experience with us is as smooth as possible.Thank you for considering our services,
                 and we hope to have the opportunity to serve you in the future. We value your business and appreciate your understanding.<br><br>
                 Warm regards,<br>
                 Prithvi Raj Chauhan<br>
@@ -94,21 +94,21 @@ def checkout_email(request):
 
     subject = "Checkout Confirmed"
     message = f"""<strong>Dear {customer_name}, <br><br>
-                We hope you have had a pleasant stay with us at Bloom Stays, and we appreciate your choice in selecting our hotel for your accommodation. 
+                We hope you have had a pleasant stay with us at Bloom Stays, and we appreciate your choice in selecting our hotel for your accommodation.
                 We are writing to confirm that your check-out has been successfully processed. <br>
                 Here are the details of your check-out: <br><br>
                 Check-Out Date: {checkout_date} <br><br>
                 Total Paid-Amount - {paidAmount} <br><br>
                 Final Bill: Your final bill has been settled with the payment method provided during your check-in, and all charges, including room charges, taxes, and any additional expenses, have been accurately reflected in the bill. <br>
-                We trust that you found your stay comfortable and that our services met your expectations. 
+                We trust that you found your stay comfortable and that our services met your expectations.
                 Your satisfaction is of utmost importance to us, and we are delighted to have had the opportunity to serve you. <br><br>
                 If you have any questions or require a copy of your final invoice, please do not hesitate to reach out to our front desk staff, who will be more than happy to assist you. <br><br>
-                Once again, we thank you for choosing Bloom Stays, and we look forward to welcoming you back in the future. 
+                Once again, we thank you for choosing Bloom Stays, and we look forward to welcoming you back in the future.
                 Your feedback and experience with us are invaluable as we continually strive to provide exceptional service to our guests. <br><br>
                 Safe travels, and we hope to see you again soon. <br><br>
                 Warm regards, <br><br>
                 Bloom Stays <br>
-                +91 111 222 0000 
+                +91 111 222 0000
                 </strong>
                 """
     from_email = settings.EMAIL_HOST_USER

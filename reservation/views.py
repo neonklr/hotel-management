@@ -41,8 +41,8 @@ def room_list(request):
         end_time_str = request.POST.get("checkOut")
         start_time = datetime.strptime(start_time_str, "%Y-%m-%d")
         end_time = datetime.strptime(end_time_str, "%Y-%m-%d")
-        if (end_time-start_time).days < 0:
-            available_rooms_count=0
+        if (end_time - start_time).days < 0:
+            available_rooms_count = 0
         else:
             available_rooms_count = calculate_available_rooms_by_room_type(start_time, end_time)
         return render(
@@ -54,8 +54,7 @@ def room_list(request):
 
 def calculate_available_rooms_by_room_type(start_time, end_time):
     available_rooms_count = {}
-    
-        
+
     room_types = Room.objects.values("room_type").distinct()
     for room_type in room_types:
         room_type_name = room_type["room_type"]

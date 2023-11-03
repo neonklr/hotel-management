@@ -54,7 +54,9 @@
           <option value="royal">Royal Room</option>
           <option value="premium">Premium Room</option> -->
           {% for room_type, count in room_type_counts.items %}
+          {% if count > 0 %}
             <option value="{{room_type}}">{{ room_type }}: {{ count }} rooms available</option>
+          {% endif %}  
         {% endfor %}
         </select>
       </div>

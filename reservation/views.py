@@ -15,9 +15,9 @@ def update_reservation_view(request):
     return render(request, "update.html")
 
 
+# Cancels reservations iff user is logged in and validated.
 @login_required
 def cancel_reservation(request, uuid):
-    # Cancels reservations iff user is logged in and validated.
     resv = Reservation.objects.get(uuid=uuid)
     print(resv.email)
     print(User.objects.get(email=request.session.get("login_token")))
@@ -41,7 +41,10 @@ def room_list(request):
         end_time_str = request.POST.get("checkOut")
         start_time = datetime.strptime(start_time_str, "%Y-%m-%d")
         end_time = datetime.strptime(end_time_str, "%Y-%m-%d")
-        available_rooms_count = calculate_available_rooms_by_room_type(start_time, end_time)
+        if (end_time-start_time).days < 0:
+            available_rooms_count=0
+        else:
+            available_rooms_count = calculate_available_rooms_by_room_type(start_time, end_time)
         return render(
             request,
             "new.html",
@@ -51,6 +54,8 @@ def room_list(request):
 
 def calculate_available_rooms_by_room_type(start_time, end_time):
     available_rooms_count = {}
+    
+        
     room_types = Room.objects.values("room_type").distinct()
     for room_type in room_types:
         room_type_name = room_type["room_type"]
@@ -58,7 +63,7 @@ def calculate_available_rooms_by_room_type(start_time, end_time):
         available_count = 0
         for room in rooms_of_type:
             reservations = Reservation.objects.filter(
-                room_no=room, booked_from__lte=end_time, booked_to__gte=start_time
+                room_no=room, booked_from__gte=end_time, booked_to__lte=start_time
             )
             if not reservations.exists():
                 available_count += 1
@@ -68,7 +73,6 @@ def calculate_available_rooms_by_room_type(start_time, end_time):
 
 # Logic for booking rooms
 def book_rooms(request):
-    # room = Room.objects.get(pk="room_no")
     if request.method == "POST":
         room_type = request.POST.get("roomType")
         start_time_str = request.POST.get("checkIn")
@@ -80,7 +84,6 @@ def book_rooms(request):
         if start_time_str and end_time_str:
             resv = Reservation(
                 date=datetime.now(),
-                # email=User(request.session.get("login_token")),
                 email=User.objects.get(email=request.session.get("login_token")),
                 booked_from=start_time_str,
                 booked_to=end_time_str,

@@ -1,10 +1,10 @@
 # # Create your views here.
 from django.contrib import messages
 from django.shortcuts import HttpResponse, redirect, render
-from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from users.models import User
 from .models import Reservation, Room
+from authentication.logic import auth
 
 
 def new_reservation_view(request):
@@ -16,7 +16,7 @@ def update_reservation_view(request):
 
 
 # Cancels reservations iff user is logged in and validated.
-@login_required
+@auth()
 def cancel_reservation(request, uuid):
     resv = Reservation.objects.get(uuid=uuid)
     print(resv.email)
@@ -33,6 +33,7 @@ def cancel_reservation(request, uuid):
     return redirect("/dashboard/")
 
 
+@auth()
 def room_list(request):
     if request.method == "GET":
         return render(request, "new.html")

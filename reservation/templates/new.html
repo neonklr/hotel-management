@@ -17,29 +17,68 @@
    <div class="new-reservation-form p-4">
     <h2>New Reservation</h2>
     <br>
-    <form>
+    <form method="post" action="">
+      {% csrf_token %}
       <div class="mb-3">
         <label for="checkIn" class="form-label">Check-In Date</label>
+        {% if checkIn is not none %}
+        <input type="date" class="form-control" id="checkIn" name="checkIn" required value="{{checkIn}}">
+        {% else %}
         <input type="date" class="form-control" id="checkIn" name="checkIn" required>
+        {% endif %}
       </div>
       <div class="mb-3">
         <label for="checkOut" class="form-label">Check-Out Date</label>
+        {% if checkOut is not none %}
+        <input type="date" class="form-control" id="checkOut" name="checkOut" required value="{{checkOut}}">
+        {% else %}
         <input type="date" class="form-control" id="checkOut" name="checkOut" required>
+        {% endif %}
       </div>
+      <div class="mb-3">
+        <button type="submit" class="btn custom-yellow-button">Check Availability</button>
+      </div>
+    </form>
+
+
+
+
+    <form method="post" name="bookings" action="/reservation/book_rooms/">
+      {% csrf_token %}
+      <input type="date" class="form-control" id="checkIn" name="checkIn" required value="{{checkIn}}" style="display: none;">
+      <input type="date" class="form-control" id="checkOut" name="checkOut" required value="{{checkOut}}" style="display: none;">
       <div class="mb-3">
         <label for="roomType" class="form-label">Room Type</label>
         <select class="form-select" id="roomType" name="roomType" required>
-          <option value="deluxe">Deluxe Room</option>
+          <!-- <option value="deluxe">Deluxe Room</option>
           <option value="royal">Royal Room</option>
-          <option value="premium">Premium Room</option>
+          <option value="premium">Premium Room</option> -->
+          {% for room_type, count in room_type_counts.items %}
+          {% if count > 0 %}
+            <option value="{{room_type}}">{{ room_type }}: {{ count }} rooms available</option>
+          {% endif %}
+        {% endfor %}
         </select>
       </div>
+
+<!--
+      <div class="mb-3">
+        <label for="room_type">Room Type</label>
+        <select name="room_type" id="room_type">
+          {% for room_type, room_count in available_rooms_by_type.items %}
+          <option value="{{ room_type }}">{{ room_type }} ({{ room_count }} available)</option>
+          {% endfor %}
+        </select>
+      </div> -->
+
+
+
       {% comment %} <div class="mb-3">
         <label for="noOfRooms" class="form-label">Number of Rooms</label>
         <input type="number" class="form-control" id="noOfRooms" name="noOfRooms" min="1" required>
       </div> {% endcomment %}
       <div class="mb-3">
-        <button class="btn custom-yellow-button">Book Room</button>
+        <button type="submit" class="btn custom-yellow-button">Book Room</button>
       </div>
       <!-- Display availability results here -->
 

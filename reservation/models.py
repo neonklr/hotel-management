@@ -16,5 +16,5 @@ class Reservation(models.Model):
     email = models.ForeignKey(User, on_delete=models.CASCADE)
     payment_method = models.CharField(max_length=20)
     payment_amount = models.IntegerField()
-    checked_out_at = models.DateTimeField(null=True)
-    completed = models.BooleanField(default=False)
+    checked_out_at = models.DateTimeField(null=True, blank=True)
+    completed = models.CharField(max_length=100)

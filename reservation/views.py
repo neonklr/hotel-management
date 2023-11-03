@@ -32,6 +32,7 @@ def cancel_reservation(request, uuid):
     messages.success(request, "Reservation canceled successfully.")
     return redirect("/dashboard/")
 
+
 @auth()
 def room_list(request):
     if request.method == "GET":

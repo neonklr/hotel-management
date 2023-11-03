@@ -5,8 +5,13 @@ from django.shortcuts import redirect
 
 from users.models import User
 
+from . import logic
+
 
 def signup(request):
+    if logic.get_session_data(request, "login_token"):
+        return redirect("/dashboard")
+
     if request.method == "POST":
         email = request.POST.get("user_email")
         password = request.POST.get("user_password")
@@ -21,11 +26,15 @@ def signup(request):
             return redirect("/get_started#login-tab-content")
 
         User(email=email, password=password).save()
-
+        logic.set_session_data(request, "login_token", email)
+        messages.success(request, "Logged in successfully")
         return redirect("/dashboard")
 
 
 def login(request):
+    if logic.get_session_data(request, "login_token"):
+        return redirect("/dashboard")
+
     if request.method == "POST":
         email = request.POST["email"]
         password = request.POST["password"]
@@ -33,7 +42,7 @@ def login(request):
         user = User.objects.filter(email=email).filter(password=password).first()
 
         if user:
-            set_session_data(request, "login_token", email)
+            logic.set_session_data(request, "login_token", email)
             messages.success(request, "Logged in successfully")
             return redirect("/dashboard")
         else:
@@ -41,23 +50,8 @@ def login(request):
             return redirect("/get_started#login-tab-content")
 
 
+@logic.auth()
 def logout(request):
-    if request.method == "POST":
-        delete_session_data(request, "login_token")
-        messages.success(request, "Logged out successfully")
-        return redirect("/get_started#login-tab-content")
-
-
-# storing the data
-def set_session_data(request, key, value):
-    request.session[key] = value
-
-
-# retreiving the data
-def get_session_data(request, key):
-    return request.session[key]
-
-
-# deleting the data
-def delete_session_data(request, key):
-    return request.session.pop(key, None)
+    logic.delete_session_data(request, "login_token")
+    messages.success(request, "Logged out successfully")
+    return redirect("/get_started#login-tab-content")

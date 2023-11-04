@@ -1,10 +1,13 @@
 # # Create your views here.
+from datetime import datetime
+
 from django.contrib import messages
 from django.shortcuts import HttpResponse, redirect, render
-from datetime import datetime
-from users.models import User
-from .models import Reservation, Room
+
 from authentication.logic import auth
+from user.models import User
+
+from .models import Reservation, Room
 
 
 def new_reservation_view(request):
@@ -15,12 +18,10 @@ def update_reservation_view(request):
     return render(request, "update.html")
 
 
-# Cancels reservations iff user is logged in and validated.
+# Cancels reservations if user is logged in and validated.
 @auth()
 def cancel_reservation(request, uuid):
     resv = Reservation.objects.get(uuid=uuid)
-    print(resv.email)
-    print(User.objects.get(email=request.session.get("login_token")))
     if resv.email != User.objects.get(email=request.session.get("login_token")):
         messages.error(request, "You are not authorized to cancel this reservation.")
         return redirect("/")
@@ -29,7 +30,7 @@ def cancel_reservation(request, uuid):
     resv.room_no.is_available = True
     resv.room_no.save()
     resv.save()
-    messages.success(request, "Reservation canceled successfully.")
+    messages.success(request, "Reservation cancelled successfully.")
     return redirect("/dashboard/")
 
 
@@ -88,7 +89,7 @@ def book_rooms(request):
                 booked_from=start_time_str,
                 booked_to=end_time_str,
                 room_no=room,
-                payment_method="Cash",
+                payment_method="UPI / Online Payment",
                 payment_amount=no_of_days * room.room_price,
                 completed="No",
             )
@@ -98,4 +99,5 @@ def book_rooms(request):
             return redirect("/dashboard")
         else:
             return HttpResponse("Please fill in all the fields.")
+
     return render(request, "reservation/new.html")

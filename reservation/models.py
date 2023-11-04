@@ -3,8 +3,14 @@ import uuid
 
 from django.db import models
 
-from rooms.models import Room
-from users.models import User
+from user.models import User
+
+
+class Room(models.Model):
+    room_no = models.IntegerField(primary_key=True, unique=True)
+    room_type = models.CharField(max_length=100)
+    room_price = models.IntegerField()
+    is_available = models.BooleanField(default=True)
 
 
 class Reservation(models.Model):

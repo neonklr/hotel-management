@@ -45,8 +45,6 @@ def view_profile(request):
 def update_profile_logic(request):
     data = {
         "name": request.POST["name"],
-        "email": request.POST["email"],
-        "password": request.POST["password"],
         "date_of_birth": request.POST["DateOfBirth"],
         "phone_number": request.POST["phoneNumber"],
         "address": request.POST["Address"],
@@ -57,6 +55,12 @@ def update_profile_logic(request):
             messages.error(request, "Please fill all the fields.")
             return redirect("/user/update/")
 
-    User(**data).save()
+    user = User.objects.get(email=request.user.email)
+    user.name = data["name"]
+    user.date_of_birth = data["date_of_birth"]
+    user.phone_number = data["phone_number"]
+    user.address = data["address"]
+    user.save()
+
     messages.success(request, "Profile updated successfully.")
     return redirect("/user/view/")

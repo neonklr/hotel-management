@@ -27,9 +27,26 @@ def cancel_reservation(request, uuid):
         messages.error(request, "You are not authorized to cancel this reservation.")
         return redirect("/dashboard")
 
+    request.session["customer_name"] = request.user.name
+    request.session["customer_email"] = request.user.email
+    request.session["checkin_date"] = str(resv.booked_from.date())
+    request.session["checkout_date"] = str(resv.booked_to.date())
+    request.session["room_type"] = resv.room.type
+    request.session["price"] = resv.room.price
+    request.session["days"] = (resv.booked_to - resv.booked_from).days
+
+    # print(str(resv.booked_from.date()))
+    # print(type(str(resv.booked_from.date())))
+    # print(resv.booked_to.date())
+    # print(type(resv.booked_to.date()))
+    # print((resv.booked_to - resv.booked_from).days)
+    # print(type((resv.booked_to - resv.booked_from).days))
+
     resv.cancel()
     messages.success(request, "Reservation cancelled successfully.")
-    return redirect("/reservation/view")
+
+    return redirect("/emailapp/earlycancel")
+    # return redirect('/dashboard')
 
 
 @auth()
@@ -107,7 +124,16 @@ def book_room(request):
             room.save()
             resv.save()
 
-            return redirect("/reservation/view")
+            request.session["customer_email"] = request.user.email
+            request.session["customer_name"] = request.user.name
+            request.session["checkin_date"] = request.POST.get("checkIn")
+            request.session["checkout_date"] = request.POST.get("checkOut")
+            request.session["room_type"] = room.type
+            request.session["price"] = room.price
+            request.session["days"] = no_of_days
+
+            # return redirect("/reservation/view")
+            return redirect("/emailapp/checkin")
         else:
             messages.error(request, "Please fill in all the details ...")
             return redirect("/reservation/new")

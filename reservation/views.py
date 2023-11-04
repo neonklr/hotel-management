@@ -41,11 +41,16 @@ def new_reservation(request):
 
         start_time, end_time = logic.get_start_end_datetime(start_datetime_str, end_datetime_str)
 
-        if (end_time - start_time).days < 0:
-            available_rooms_count = 0
-        else:
-            available_rooms = logic.calculate_available_rooms(start_time, end_time)
-            available_rooms_count = {room_type: len(rooms) for room_type, rooms in available_rooms.items()}
+        if (start_time < datetime.now()) or (end_time < datetime.now()):
+            messages.error(request, "Please select a future date.")
+            return redirect("/reservation/new")
+
+        if start_time >= end_time:
+            messages.error(request, "Check out date must be after check in date.")
+            return redirect("/reservation/new")
+
+        available_rooms = logic.calculate_available_rooms(start_time, end_time)
+        available_rooms_count = {room_type: len(rooms) for room_type, rooms in available_rooms.items()}
 
         return render(
             request,

@@ -38,7 +38,7 @@ def view_profile(request):
         )
 
     messages.error(request, "You are not authorized to view this page.")
-    return redirect("/dashboard")
+    return redirect("/get_started/")
 
 
 @auth(by_pass_route=True)
@@ -55,8 +55,8 @@ def update_profile_logic(request):
     for value in data.values():
         if not value:
             messages.error(request, "Please fill all the fields.")
-            return redirect("/user/update")
+            return redirect("/user/update/")
 
     User(**data).save()
     messages.success(request, "Profile updated successfully.")
-    return redirect("/user/view")
+    return redirect("/user/view/")

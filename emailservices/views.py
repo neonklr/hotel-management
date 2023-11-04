@@ -257,6 +257,7 @@ def generate_invoice_earlycheckout(
 
     doc.build(elements)
 
+
 @auth()
 def checkin_send_email(request, uuid):
     reservation = Reservation.objects.get(uuid=uuid)
@@ -327,6 +328,7 @@ def checkin_send_email(request, uuid):
 
     except Exception as e:
         return render(request, "Error.html", {"message": e})
+
 
 @auth()
 def send_refund_email(request, uuid):
@@ -399,6 +401,7 @@ def send_refund_email(request, uuid):
     except Exception:
         message = "Wrong Email Address!!"
         return render(request, "Error.html", {"message": message})
+
 
 @auth()
 def checkout_email(request, uuid):

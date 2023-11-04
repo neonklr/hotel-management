@@ -4,7 +4,9 @@ from datetime import datetime
 
 from django.test import Client, TestCase
 
-from .models import User
+from user.models import User
+
+from .models import Room
 
 
 class TestViewReservationPage(TestCase):
@@ -61,5 +63,39 @@ class TestNewReservationPage(TestCase):
 
         response = self.client.get("/reservation/new/")
         self.assertEqual(response.status_code, 200)
+
+        self.client.get("/auth/logout/")
+
+
+class TestNewReservation(TestCase):
+    def setUp(self):
+        Room.objects.create(type="Delux", no=1, price=100)
+
+        User.objects.create(
+            name="test",
+            email="test@example.com",
+            password="password",
+            address="address",
+            phone_number=123,
+            date_of_birth=datetime.now(),
+        )
+
+        self.client = Client()
+
+    def test_new_reservation(self):
+        self.client.post("/auth/login/", {"email": "test@example.com", "password": "password"}, follow=True)
+
+        response = self.client.post(
+            "/reservation/new/",
+            {
+                "roomType": "Delux",
+                "checkIn": "2024-01-01",
+                "checkOut": "2024-01-02",
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Delux")
 
         self.client.get("/auth/logout/")

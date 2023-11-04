@@ -1,5 +1,6 @@
 # Create your views here.
-from django.shortcuts import HttpResponse, redirect, render
+from django.contrib import messages
+from django.shortcuts import redirect, render
 
 from authentication.logic import auth
 from user.models import User
@@ -10,7 +11,9 @@ def update_profile(request):
     if request.method == "GET":
         if request.user:
             return render(request, "update.html", {"user": request.user})
-        return HttpResponse("<h3>direct access forbidden</h3>")
+
+        messages.error(request, "You are not authorized to view this page.")
+        return redirect("/dashboard")
 
     elif request.method == "POST":
         return update_profile_logic(request)
@@ -21,7 +24,8 @@ def view_profile(request):
     if request.user:
         return render(request, "view.html", {"user": request.user})
 
-    return HttpResponse("<h3>direct access forbidden</h3>")
+    messages.error(request, "You are not authorized to view this page.")
+    return redirect("/dashboard")
 
 
 @auth(by_pass_route=True)

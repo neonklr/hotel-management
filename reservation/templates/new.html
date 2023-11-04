@@ -89,8 +89,10 @@
         <input type="number" class="form-control" id="noOfRooms" name="noOfRooms" min="1" required>
         </div> {% endcomment %}
         <div class="mb-3">
-          <button type="submit" class="btn btn-warning">Book Room</button>
-        </div>
+          {% if room_type_counts %}
+            <button type="submit" class="btn btn-warning">Book Room</button>
+          {% endif %}
+          </div>
         <!-- Display availability results here -->
         <div id="availabilityResult"></div>
       </form>

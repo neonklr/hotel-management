@@ -43,7 +43,7 @@
 
 
 
-    <form method="post" name="bookings" action="/reservation/book_rooms/">
+    <form method="post" name="bookings" action="/reservation/book_room/">
       {% csrf_token %}
       <input type="date" class="form-control" id="checkIn" name="checkIn" required value="{{checkIn}}" style="display: none;">
       <input type="date" class="form-control" id="checkOut" name="checkOut" required value="{{checkOut}}" style="display: none;">

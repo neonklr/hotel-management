@@ -2,51 +2,48 @@
 from datetime import datetime
 
 from django.contrib import messages
-from django.shortcuts import HttpResponse, redirect, render
+from django.shortcuts import redirect, render
 
 from authentication.logic import auth
-from user.models import User
 
+from . import logic
 from .models import Reservation, Room
 
 
-def new_reservation_view(request):
-    return render(request, "new.html")
-
-
-def update_reservation_view(request):
-    return render(request, "update.html")
+def previous_reservation(request):
+    return render(request, "history.html")
 
 
 # Cancels reservations if user is logged in and validated.
 @auth()
 def cancel_reservation(request, uuid):
     resv = Reservation.objects.get(uuid=uuid)
-    if resv.email != User.objects.get(email=request.session.get("login_token")):
-        messages.error(request, "You are not authorized to cancel this reservation.")
-        return redirect("/")
 
-    resv.completed = "Cancelled"
-    resv.room_no.is_available = True
-    resv.room_no.save()
-    resv.save()
+    if resv.guest != request.user:
+        messages.error(request, "You are not authorized to cancel this reservation.")
+        return redirect("/dashboard")
+
+    resv.cancel()
     messages.success(request, "Reservation cancelled successfully.")
-    return redirect("/dashboard/")
+    return redirect("/reservation/history")
 
 
 @auth()
-def room_list(request):
+def new_reservation(request):
     if request.method == "GET":
         return render(request, "new.html")
+
     elif request.method == "POST":
         start_time_str = request.POST.get("checkIn")
         end_time_str = request.POST.get("checkOut")
         start_time = datetime.strptime(start_time_str, "%Y-%m-%d")
         end_time = datetime.strptime(end_time_str, "%Y-%m-%d")
+
         if (end_time - start_time).days < 0:
             available_rooms_count = 0
         else:
-            available_rooms_count = calculate_available_rooms_by_room_type(start_time, end_time)
+            available_rooms_count = logic.calculate_available_rooms_by_room_type(start_time, end_time)
+
         return render(
             request,
             "new.html",
@@ -54,50 +51,37 @@ def room_list(request):
         )
 
 
-def calculate_available_rooms_by_room_type(start_time, end_time):
-    available_rooms_count = {}
-
-    room_types = Room.objects.values("room_type").distinct()
-    for room_type in room_types:
-        room_type_name = room_type["room_type"]
-        rooms_of_type = Room.objects.filter(room_type=room_type_name)
-        available_count = 0
-        for room in rooms_of_type:
-            reservations = Reservation.objects.filter(
-                room_no=room, booked_from__gte=end_time, booked_to__lte=start_time
-            )
-            if not reservations.exists():
-                available_count += 1
-        available_rooms_count[room_type_name] = available_count
-    return available_rooms_count
-
-
 # Logic for booking rooms
-def book_rooms(request):
+@auth()
+def book_room(request):
     if request.method == "POST":
         room_type = request.POST.get("roomType")
         start_time_str = request.POST.get("checkIn")
         end_time_str = request.POST.get("checkOut")
-        print(room_type)
-        available_rooms = Room.objects.filter(is_available=True, room_type=room_type)
+
+        available_rooms = Room.objects.filter(is_available=True, type=room_type)
         room = available_rooms[0]
-        no_of_days = (datetime.strptime(end_time_str, "%Y-%m-%d") - datetime.strptime(start_time_str, "%Y-%m-%d")).days
-        if start_time_str and end_time_str:
+
+        no_of_days = (
+            datetime.strptime(end_time_str, "%Y-%m-%d") - datetime.strptime(start_time_str, "%Y-%m-%d")
+        ).days + 1
+
+        if no_of_days > 0:
             resv = Reservation(
-                date=datetime.now(),
-                email=User.objects.get(email=request.session.get("login_token")),
+                guest=request.user,
+                booked_on=datetime.now(),
                 booked_from=start_time_str,
                 booked_to=end_time_str,
-                room_no=room,
-                payment_method="UPI / Online Payment",
-                payment_amount=no_of_days * room.room_price,
-                completed="No",
+                room=room,
+                payment_amount=no_of_days * room.price,
+                status="Payment Due",
             )
-            resv.save()
+
             room.is_available = False
             room.save()
-            return redirect("/dashboard")
-        else:
-            return HttpResponse("Please fill in all the fields.")
+            resv.save()
 
-    return render(request, "reservation/new.html")
+            return redirect("/reservation/history")
+        else:
+            messages.error(request, "Please fill in all the details ...")
+            return redirect("/reservation/new")

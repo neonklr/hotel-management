@@ -7,20 +7,28 @@ from user.models import User
 
 
 class Room(models.Model):
-    room_no = models.IntegerField(primary_key=True, unique=True)
-    room_type = models.CharField(max_length=100)
-    room_price = models.IntegerField()
+    no = models.IntegerField(primary_key=True, unique=True)
+    type = models.CharField(max_length=100)
+    price = models.IntegerField()
     is_available = models.BooleanField(default=True)
 
 
 class Reservation(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    date = models.DateField()
+    booked_on = models.DateField()
     booked_from = models.DateTimeField()
     booked_to = models.DateTimeField()
-    room_no = models.ForeignKey(Room, on_delete=models.CASCADE)
-    email = models.ForeignKey(User, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    guest = models.ForeignKey(User, on_delete=models.CASCADE)
     payment_method = models.CharField(max_length=20)
     payment_amount = models.IntegerField()
+    checked_in_at = models.DateTimeField(null=True, blank=True)
     checked_out_at = models.DateTimeField(null=True, blank=True)
-    completed = models.CharField(max_length=100)
+    status = models.CharField(max_length=100)
+
+    def cancel(self):
+        self.status = "Cancelled"
+        self.room.is_available = True
+
+        self.room.save()
+        self.save()

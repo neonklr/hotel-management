@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hotel Management System</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .reservation-card {
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      background-color: #f8f9fa;
+      height: 70%;
+    }
+    .container{
+        margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+    }
+    .circle-checkbox {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+  }
+
+  .circle-checkbox.checked {
+    background-color: #00cc00;
+    border-color: #00cc00;
+  }
+ 
+ 
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>{{uname}}'s Reservation</h2>
+    <br>
+    
+    <form>
+      <div class="reservation-card">
+        <h3>Reservation 1</h3>
+        
+        <p>User id: 2021</p>
+        <p>Booking Date: 2021-01-05</p>
+        <p>Check-in Date: 2021-01-23</p>
+        <p>Check-out Date: 2021-01-25</p>
+        <p>Room no: 201</p>
+        <p>Payment: 8000</p>
+        
+        {% if user_logged_in %}
+          <div class="form-group">
+            <button class="btn btn-primary">Checkout</button>
+          </div>
+        {% else %}
+          <div class="form-group">
+            <button class="btn btn-danger">Cancel Reservation</button>
+            <label>
+              <div class="circle-checkbox checked"></div>
+              Active
+            </label>
+          </div>
+        {% endif %}
+      </div>
+      
+      <div class="reservation-card">
+        <h3>Reservation 2</h3>
+        
+        <p>User id: 2021</p>
+        <p>Booking Date: 2021-01-05</p>
+        <p>Check-in Date: 2021-01-06</p>
+        <p>Check-out Date: 2021-01-10</p>
+        <p>Room no: 202</p>
+        <p>Payment: 4000</p>
+        
+        {% if user_logged_in %}
+          <div class="form-group">
+            <button class="btn btn-primary">Checkout</button>
+          </div>
+        {% else %}
+          <div class="form-group">
+            <button class="btn btn-danger">Cancel Reservation</button>
+            <label>
+              <div class="circle-checkbox checked"></div>
+              Active
+            </label>
+          </div>
+        {% endif %}
+      </div>
+      <!-- Add more reservation cards here -->
+      
+    </form>
+  </div>
+</body>
+</html>

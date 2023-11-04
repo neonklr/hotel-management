@@ -10,8 +10,10 @@ from . import logic
 from .models import Reservation, ReservationStatus
 
 
-def previous_reservation(request):
-    return render(request, "history.html")
+@auth()
+def view_reservation(request):
+    user_reservations = Reservation.objects.filter(guest=request.user).order_by("booked_on")
+    return render(request, "view.html", {"reservations": user_reservations, "ReservationStatus": ReservationStatus})
 
 
 # Cancels reservations if user is logged in and validated.
@@ -25,7 +27,7 @@ def cancel_reservation(request, uuid):
 
     resv.cancel()
     messages.success(request, "Reservation cancelled successfully.")
-    return redirect("/reservation/history")
+    return redirect("/reservation/view")
 
 
 @auth()
@@ -62,8 +64,9 @@ def checkout_room(request, uuid):
 
     resv.checked_out_at = datetime.now()
     resv.status = ReservationStatus.checked_out_refund_pending
+    resv.save()
 
-    return redirect("/reservation/history")
+    return redirect("/reservation/view")
 
 
 # Logic for booking rooms
@@ -97,7 +100,7 @@ def book_room(request):
             room.save()
             resv.save()
 
-            return redirect("/reservation/history")
+            return redirect("/reservation/view")
         else:
             messages.error(request, "Please fill in all the details ...")
             return redirect("/reservation/new")

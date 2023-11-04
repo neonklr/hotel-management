@@ -13,6 +13,21 @@ class Room(models.Model):
     is_available = models.BooleanField(default=True)
 
 
+class ReservationStatus:
+    booked = "Booked"
+    booked_payment_due = "Booked - Payment Due"
+
+    checked_in = "Checked In"
+
+    checked_out = "Checked Out"
+    checked_out_refund_pending = "Checked Out - Refund Pending"
+
+    cancelled = "Cancelled"
+    cancelled_refund_pending = "Cancelled - Refund Pending"
+
+    stay_completed = "Stay Completed"
+
+
 class Reservation(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     booked_on = models.DateField()
@@ -27,7 +42,7 @@ class Reservation(models.Model):
     status = models.CharField(max_length=100)
 
     def cancel(self):
-        self.status = "Cancelled"
+        self.status = ReservationStatus.cancelled_refund_pending
         self.room.is_available = True
 
         self.room.save()

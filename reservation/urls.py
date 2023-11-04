@@ -22,6 +22,6 @@ urlpatterns = [
     path("new/", views.new_reservation, name="new_reservation"),
     path("history/", views.previous_reservation, name="previous_reservation"),
     path("cancel/<str:uuid>/", views.cancel_reservation, name="cancel_reservation"),
-    # path("checkout/<str:uuid>/", views.checkout_room, name="checkout_room"),
+    path("checkout/<str:uuid>/", views.checkout_room, name="checkout_room"),
     path("book_room/", views.book_room),
 ]

@@ -1,20 +1,34 @@
+from datetime import datetime
+
 from .models import Reservation, Room
 
 
-def calculate_available_rooms_by_room_type(start_time, end_time):
-    available_rooms_count = {}
-    room_types = Room.objects.values("type").distinct()
+def calculate_available_rooms(start_time, end_time):
+    available_rooms = {}
 
-    for room_type in room_types:
-        room_type_name = room_type["type"]
-        rooms_of_type = Room.objects.filter(type=room_type_name)
-        available_count = 0
+    for room in Room.objects.all():
+        conflicting_reservations = Reservation.objects.filter(
+            room=room, booked_from__lt=end_time, booked_to__gt=start_time
+        )
 
-        for room in rooms_of_type:
-            reservations = Reservation.objects.filter(room=room, booked_from__gte=end_time, booked_to__lte=start_time)
+        if not conflicting_reservations.exists():
+            if available_rooms.get(room.type) is None:
+                available_rooms[room.type] = [room]
+            else:
+                available_rooms[room.type].append(room)
 
-            if not reservations.exists():
-                available_count += 1
+    return available_rooms
 
-        available_rooms_count[room_type_name] = available_count
-    return available_rooms_count
+
+def get_start_end_datetime(start_datetime_str, end_datetime_str):
+    try:
+        start_datetime = datetime.strptime(start_datetime_str, "%Y-%m-%d")
+    except ValueError:
+        start_datetime = datetime.strptime(start_datetime_str, "%Y-%m-%d %H:%M:%S")
+
+    try:
+        end_datetime = datetime.strptime(end_datetime_str, "%Y-%m-%d")
+    except ValueError:
+        end_datetime = datetime.strptime(end_datetime_str, "%Y-%m-%d %H:%M:%S")
+
+    return start_datetime, end_datetime

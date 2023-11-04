@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from authentication.logic import auth
 
 from . import logic
-from .models import Reservation, Room
+from .models import Reservation, ReservationStatus
 
 
 def previous_reservation(request):
@@ -34,47 +34,64 @@ def new_reservation(request):
         return render(request, "new.html")
 
     elif request.method == "POST":
-        start_time_str = request.POST.get("checkIn")
-        end_time_str = request.POST.get("checkOut")
-        start_time = datetime.strptime(start_time_str, "%Y-%m-%d")
-        end_time = datetime.strptime(end_time_str, "%Y-%m-%d")
+        start_datetime_str = request.POST.get("checkIn")
+        end_datetime_str = request.POST.get("checkOut")
+
+        start_time, end_time = logic.get_start_end_datetime(start_datetime_str, end_datetime_str)
 
         if (end_time - start_time).days < 0:
             available_rooms_count = 0
         else:
-            available_rooms_count = logic.calculate_available_rooms_by_room_type(start_time, end_time)
+            available_rooms = logic.calculate_available_rooms(start_time, end_time)
+            available_rooms_count = {room_type: len(rooms) for room_type, rooms in available_rooms.items()}
 
         return render(
             request,
             "new.html",
-            {"room_type_counts": available_rooms_count, "checkIn": start_time_str, "checkOut": end_time_str},
+            {"room_type_counts": available_rooms_count, "checkIn": start_datetime_str, "checkOut": end_datetime_str},
         )
+
+
+@auth()
+def checkout_room(request, uuid):
+    resv = Reservation.objects.get(uuid=uuid)
+
+    if resv.guest != request.user:
+        messages.error(request, "You are not authorized to checkout this reservation.")
+        return redirect("/dashboard")
+
+    resv.checked_out_at = datetime.now()
+    resv.status = ReservationStatus.checked_out_refund_pending
+
+    return redirect("/reservation/history")
 
 
 # Logic for booking rooms
 @auth()
 def book_room(request):
     if request.method == "POST":
-        room_type = request.POST.get("roomType")
-        start_time_str = request.POST.get("checkIn")
-        end_time_str = request.POST.get("checkOut")
+        roome_type = request.POST.get("roomType")
 
-        available_rooms = Room.objects.filter(is_available=True, type=room_type)
-        room = available_rooms[0]
+        start_datetime, end_datetime = logic.get_start_end_datetime(
+            request.POST.get("checkIn"), request.POST.get("checkOut")
+        )
 
-        no_of_days = (
-            datetime.strptime(end_time_str, "%Y-%m-%d") - datetime.strptime(start_time_str, "%Y-%m-%d")
-        ).days + 1
+        room = logic.calculate_available_rooms(start_datetime, end_datetime)[roome_type][0]
+
+        no_of_days = (end_datetime - start_datetime).days
+
+        if (end_datetime - start_datetime).seconds > 0:
+            no_of_days += 1
 
         if no_of_days > 0:
             resv = Reservation(
                 guest=request.user,
                 booked_on=datetime.now(),
-                booked_from=start_time_str,
-                booked_to=end_time_str,
+                booked_from=start_datetime,
+                booked_to=end_datetime,
                 room=room,
                 payment_amount=no_of_days * room.price,
-                status="Payment Due",
+                status=ReservationStatus.booked_payment_due,
             )
 
             room.is_available = False

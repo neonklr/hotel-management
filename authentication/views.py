@@ -27,7 +27,7 @@ def signup(request):
 
         User(email=email, password=password).save()
         logic.set_session_data(request, "login_token", email)
-        messages.success(request, "Logged in successfully")
+        messages.success(request, "You are halfway there... please complete your profile...")
         return redirect("/dashboard")
 
 

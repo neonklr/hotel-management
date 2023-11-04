@@ -10,7 +10,16 @@ from user.models import User
 def update_profile(request):
     if request.method == "GET":
         if request.user:
-            return render(request, "update.html", {"user": request.user})
+            return render(
+                request,
+                "user/update.html",
+                {
+                    "user": request.user,
+                    "date_of_birth": request.user.date_of_birth.strftime("%Y-%m-%d")
+                    if request.user.date_of_birth
+                    else "",
+                },
+            )
 
         messages.error(request, "You are not authorized to view this page.")
         return redirect("/dashboard")
@@ -22,7 +31,11 @@ def update_profile(request):
 @auth()
 def view_profile(request):
     if request.user:
-        return render(request, "view.html", {"user": request.user})
+        return render(
+            request,
+            "user/view.html",
+            {"user": request.user, "date_of_birth": request.user.date_of_birth.strftime("%Y-%m-%d")},
+        )
 
     messages.error(request, "You are not authorized to view this page.")
     return redirect("/dashboard")
@@ -41,7 +54,9 @@ def update_profile_logic(request):
 
     for value in data.values():
         if not value:
+            messages.error(request, "Please fill all the fields.")
             return redirect("/user/update")
 
     User(**data).save()
-    return redirect("/dashboard")
+    messages.success(request, "Profile updated successfully.")
+    return redirect("/user/view")

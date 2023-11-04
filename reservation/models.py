@@ -10,7 +10,6 @@ class Room(models.Model):
     no = models.IntegerField(primary_key=True, unique=True)
     type = models.CharField(max_length=100)
     price = models.IntegerField()
-    is_available = models.BooleanField(default=True)
 
 
 class ReservationStatus:
@@ -43,7 +42,5 @@ class Reservation(models.Model):
 
     def cancel(self):
         self.status = ReservationStatus.cancelled_refund_pending
-        self.room.is_available = True
-
         self.room.save()
         self.save()

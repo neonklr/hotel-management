@@ -94,7 +94,6 @@ def book_room(request):
                 status=ReservationStatus.booked_payment_due,
             )
 
-            room.is_available = False
             room.save()
             resv.save()
 

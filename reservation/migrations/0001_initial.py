@@ -46,9 +46,7 @@ class Migration(migrations.Migration):
                 ("completed", models.CharField(max_length=100)),
                 (
                     "email",
-                    models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="user.user"
-                    ),
+                    models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="user.user"),
                 ),
                 (
                     "room_no",

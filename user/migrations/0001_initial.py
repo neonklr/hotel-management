@@ -15,9 +15,7 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=255)),
                 (
                     "email",
-                    models.EmailField(
-                        max_length=255, primary_key=True, serialize=False, unique=True
-                    ),
+                    models.EmailField(max_length=255, primary_key=True, serialize=False, unique=True),
                 ),
                 ("password", models.CharField(max_length=255)),
                 ("address", models.CharField(max_length=255)),

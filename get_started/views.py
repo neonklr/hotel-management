@@ -1,7 +1,12 @@
 # Create your views here.
 
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+
+from authentication.logic import get_session_data
 
 
 def index(request):
-    return render(request, "login.html")
+    if get_session_data(request, "login_token"):
+        return redirect("/dashboard")
+
+    return render(request, "get_started/index.html")

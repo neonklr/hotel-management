@@ -1,6 +1,10 @@
 # Create your tests here.
 
+from datetime import datetime
+
 from django.test import Client, TestCase
+
+from user.models import User
 
 
 class TestGetStartedPage(TestCase):
@@ -29,4 +33,24 @@ class TestGetStartedPage(TestCase):
         self.assertRedirects(
             response, "/user/update/", status_code=302, target_status_code=200, fetch_redirect_response=True
         )
+        self.client.get("/auth/logout/")
+
+    def test_page_when_logged_in(self):
+        User.objects.create(
+            name="test",
+            email="test@example.com",
+            password="password",
+            address="address",
+            phone_number=123,
+            date_of_birth=datetime.now(),
+        )
+
+        self.client.post("/auth/login/", {"email": "test@example.com", "password": "password"}, follow=True)
+
+        response = self.client.get("/get_started/", follow=True)
+
+        self.assertRedirects(
+            response, "/dashboard/", status_code=302, target_status_code=200, fetch_redirect_response=True
+        )
+
         self.client.get("/auth/logout/")

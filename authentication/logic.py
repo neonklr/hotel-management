@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from user.models import User
+from users.models import User
 
 
 # storing the data

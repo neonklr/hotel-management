@@ -4,7 +4,6 @@
     "charliemarsh.ruff",
     "njpwerner.autodocstring",
     "esbenp.prettier-vscode",
-    "task.vscode-task",
-    "monosans.djlint"
+    "task.vscode-task"
   ]
 }

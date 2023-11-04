@@ -18,10 +18,8 @@ from django.urls import path
 
 from . import views
 
+
 urlpatterns = [
-    path("new/", views.new_reservation, name="new_reservation"),
-    path("view/", views.view_reservation, name="view_reservation"),
-    path("cancel/<str:uuid>/", views.cancel_reservation, name="cancel_reservation"),
-    path("checkout/<str:uuid>/", views.checkout_room, name="checkout_room"),
-    path("book_room/", views.book_room),
+    path("new/", views.new_reservation_view, name="new_reservation"),
+    path("update/", views.update_reservation_view, name="update_reservation"),
 ]

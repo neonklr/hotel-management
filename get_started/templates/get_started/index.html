@@ -964,6 +964,13 @@ input {
   transform: scale(1) translate3d(0,0,0);
 }
 </style></head><body>
+    {% for message in messages %}
+        {% if message.tags == "success" %}
+            <div class="alert alert-success" role="alert">{{ message }}</div>
+        {% elif message.tags == "error" %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+        {% endif %}
+    {% endfor %}
         <!-- LOGIN MODULE -->
         <div class="login">
             <div class="wrap">
@@ -978,7 +985,7 @@ input {
                 </div>
                 <!-- TERMS -->
                 <div class="terms">
-                    <h2>dp Terms of Service</h2>
+                    <h2>Terms of Service</h2>
                     <p class="small">Last modified: November 6, 2023</p>
                     <h3>Terms and Services</h3>
                     <p>By using our Services, you are agreeing to these terms. Please read them carefully.</p>
@@ -1044,21 +1051,6 @@ input {
                                 {% csrf_token %}
                     				<input type="text" class="input" id="user_login" name ="email" autocomplete="off" placeholder="Email ">
                     				<input type="password" class="input" id="user_pass" name="password" autocomplete="off" placeholder="Password">
-                                    {% if messages %}
-                                    <ul class="messages">
-                                        {% for message in messages%}
-                                        {% if message.tags == 'success' %}
-                                        <div class="messages">{{ message }}</div>
-
-                                        {% elif message.tags == 'error' %}
-                                        <div class="messages">{{ message }}</div>
-                                        {% endif %}
-
-
-                                            <!-- !-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> -->
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
                     				<input type="checkbox" class="checkbox" checked id="remember_me">
                     				{% comment %} <label for="remember_me">Remember me</label> {% endcomment %}
                     				<input type="submit" class="button" value="Login">
@@ -1074,22 +1066,6 @@ input {
                     				<input type="email" class="input" id="user_email" name="user_email" autocomplete="off" placeholder="Email">
                     				<input type="password" class="input" id="user_name" name="user_password" autocomplete="off" placeholder="Password">
                     				<input type="password" class="input" id="user_pass" name="repass" autocomplete="off" placeholder="Re-Enter Password">
-                                    {% if messages %}
-                                    <ul class="messages">
-                                        {% for message in messages%}
-                                        {% if message.tags == 'success' %}
-                                        <div class="messages">{{ message }}</div>
-
-                                        {% elif message.tags == 'info' %}
-                                        <div class="messages">{{ message }}</div>
-                                        {% endif %}
-
-
-                                            <!-- !-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> -->
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                                    <br>
                                     <br>
                                     <br>
                     				<input type="submit" class="button" value="Sign Up">

@@ -39,7 +39,7 @@ def update_profile_logic(request):
         "address": request.POST["Address"],
     }
 
-    for key, value in data.items():
+    for value in data.values():
         if not value:
             return redirect("/user/update")
 

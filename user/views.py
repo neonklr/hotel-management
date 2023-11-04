@@ -2,7 +2,7 @@
 from django.shortcuts import HttpResponse, redirect, render
 
 from authentication.logic import auth
-from users.models import User
+from user.models import User
 
 
 @auth(by_pass_route=True)

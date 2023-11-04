@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Reservation History
+{% endblock title %}
+{% block content %}
+  {% for reservation in reservations %}
+    <div class="card text-center" style="margin: 20px;">
+      <div class="card-header">
+        <ul class="nav nav-pills card-header-pills">
+          <li>
+            <button type="button" class="btn btn-primary" disabled>{{ reservation.status }}</button>
+          </li>
+          <li>
+            <a class="nav-link disabled">Reservation ID : {{ reservation.uuid }}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Room No. {{ reservation.room.no }} ({{ reservation.room.type }})</h5>
+        <p class="card-text">
+          This room was booked on <b>{{ reservation.booked_on }}</b> and is booked for <b>{{ reservation.booked_from }} to {{ reservation.booked_to }}</b> duration.
+        </p>
+        {% if reservation.payment_method %}
+          <button class="btn btn-outline-dark" disabled>Amount paid : Rs. {{ reservation.payment_amount }}</button>
+        {% endif %}
+        {% if reservation.checked_in_at %}
+          <button class="btn btn-outline-dark" disabled>Checked In At : {{ reservation.checked_in_at }}</button>
+        {% endif %}
+        {% if reservation.checked_out_at %}
+          <button class="btn btn-outline-dark" disabled>Checked Out At : {{ reservation.checked_out_at }}</button>
+        {% endif %}
+        {% if reservation.status == ReservationStatus.checked_in %}
+          <a href="/reservation/checkout/{{ reservation.uuid }}"
+             class="btn btn-warning">Check Out</a>
+        {% elif reservation.status == ReservationStatus.booked or reservation.status == ReservationStatus.booked_payment_due %}
+          <a href="/reservation/cancel/{{ reservation.uuid }}"
+             class="btn btn-danger">Cancel Booking</a>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+{% endblock content %}

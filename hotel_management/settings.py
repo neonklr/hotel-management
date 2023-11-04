@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "home",
     "get_started",
     "dashboard",
+    "emailservices",
     "user",
 ]
 
@@ -165,8 +166,16 @@ if not DEBUG:
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Session
-SESSION_ENGINE = "django.contrib.sessions.backends.db"
-SESSION_SERIALIZER = "django.contrib.sessions.serializers.JSONSerializer"
-SESSION_COOKIE_NAME = "hotel_management"
-SESSION_COOKIE_AGE = 3600
-SESSION_COOKIE_SECURE = True
+# SESSION_ENGINE = "django.contrib.sessions.backends.db"
+# SESSION_SERIALIZER = "django.contrib.sessions.serializers.JSONSerializer"
+# SESSION_COOKIE_NAME = "hotel_management"
+# SESSION_COOKIE_AGE = 3600
+# SESSION_COOKIE_SECURE = True
+
+# EmailService SMTP setup
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "raajvsingh2@gmail.com"
+EMAIL_HOST_PASSWORD = "xwvo nvys rgcj zpeg"

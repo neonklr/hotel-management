@@ -17,6 +17,10 @@ def signup(request):
         password = request.POST.get("user_password")
         repass = request.POST.get("repass")
 
+        if not password:
+            messages.error(request, "Password cannot be empty")
+            return redirect("/get_started#signup-tab-content")
+
         if not password == repass:
             messages.error(request, "Password does not match re-entered password")
             return redirect("/get_started#signup-tab-content")
@@ -25,9 +29,9 @@ def signup(request):
             messages.error(request, "You are already registered... please login again")
             return redirect("/get_started#login-tab-content")
 
-        User(email=email, password=password).save()
+        User(email=email, password=logic.hash_password(password)).save()
         logic.set_session_data(request, "login_token", email)
-        messages.success(request, "Logged in successfully")
+        messages.success(request, "You are halfway there... please complete your profile...")
         return redirect("/dashboard")
 
 
@@ -37,7 +41,7 @@ def login(request):
 
     if request.method == "POST":
         email = request.POST["email"]
-        password = request.POST["password"]
+        password = logic.hash_password(request.POST["password"])
 
         user = User.objects.filter(email=email).filter(password=password).first()
 

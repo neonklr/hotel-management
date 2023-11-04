@@ -8,3 +8,6 @@ __pycache__
 
 # django related ignores
 *.sqlite3
+
+# coverage ignores
+.coverage

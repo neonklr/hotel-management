@@ -24,5 +24,6 @@ urlpatterns = [
     path("auth/", include("authentication.urls"), name="auth"),
     path("dashboard/", include("dashboard.urls"), name="dashboard"),
     path("get_started/", include("get_started.urls"), name="get_started"),
+    path("emailapp/", include("emailservices.urls")),
     path("reservation/", include("reservation.urls"), name="reservation"),
 ]

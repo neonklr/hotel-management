@@ -1,3 +1,5 @@
+import hashlib
+
 from django.contrib import messages
 from django.shortcuts import redirect
 
@@ -23,6 +25,10 @@ def profile_is_empty(user):
     return not bool(
         user.name and user.email and user.password and user.phone_number and user.address and user.date_of_birth
     )
+
+
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
 
 def auth(by_pass_route=False):

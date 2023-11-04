@@ -34,8 +34,9 @@ My Reservations
     {% endif %}
     {% if reservation.status == ReservationStatus.checked_in %}
     <a href="/reservation/checkout/{{ reservation.uuid }}" class="btn btn-warning">Check Out</a>
-    {% elif reservation.status == ReservationStatus.booked or reservation.status == ReservationStatus.booked_payment_due
-    %}
+    {% elif reservation.status == ReservationStatus.booked_payment_due%}
+    <a href="/reservation/cancel/{{ reservation.uuid }}" class="btn btn-danger">Cancel Booking</a>
+    {% elif reservation.status == ReservationStatus.booked %}
     <a href="/reservation/cancel/{{ reservation.uuid }}" class="btn btn-danger">Cancel Booking</a>
     {% endif %}
   </div>

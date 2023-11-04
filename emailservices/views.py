@@ -10,6 +10,8 @@ from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
+from reservation.models import Reservation, ReservationStatus
+
 # Create your views here
 
 
@@ -123,7 +125,6 @@ def generate_invoice_earlycheckout(
     days,
     checkin,
     checkout,
-    daysleft,
     refundAmount,
     early_checkout_date_str,
 ):
@@ -232,7 +233,6 @@ def generate_invoice_earlycheckout(
 
     information_data = [
         ("Early Checkout-Date", early_checkout_date_str),
-        ("Days Left", str(daysleft)),
         ("Refund Amount", str(refundAmount)),
     ]
     information_table = Table(information_data, colWidths=[1 * inch, 2 * inch])
@@ -256,22 +256,20 @@ def generate_invoice_earlycheckout(
     doc.build(elements)
 
 
-def checkin_send_email(request):
-    customer_name = request.session.get("customer_name")
-    customer_email = request.session.get("customer_email")
-    checkin_date = request.session.get("checkin_date")
-    checkout_date = request.session.get("checkout_date")
-    room_type = request.session.get("room_type")
-    price = request.session.get("price")
-    days = request.session.get("days")
+def checkin_send_email(request, uuid):
+    reservation = Reservation.objects.get(uuid=uuid)
+
+    days = (reservation.booked_to - reservation.booked_from).days
+
+    price = reservation.room.price
 
     subject = "Booking Confirmed"
-    message = f"""<strong>Dear {customer_name},<br><br>
-                We are delighted to confirm your upcoming check-in at Bloom Stays on {datetime.today().date()}. We look forward to providing you with a comfortable and enjoyable stay. <br>
+    message = f"""<strong>Dear {reservation.guest.name},<br><br>
+                We are delighted to confirm your upcoming check-in at Bloom Stays on {reservation.booked_from}. We look forward to providing you with a comfortable and enjoyable stay. <br>
                 Here are the details of your reservation: <br><br>
-                Check-in Date: {checkin_date} <br>
-                Check-Out Date: {checkout_date} <br>
-                Room Type: {room_type} <br>
+                Booking Date: {datetime.today().date()} <br>
+                Check-Out Date: {reservation.booked_to} <br>
+                Room Type: {reservation.room.type} <br>
                 Number of Days: {days} <br>
                 Price: {price} <br><br>
 
@@ -295,10 +293,17 @@ def checkin_send_email(request):
                 </strong>
                 """
     from_email = settings.EMAIL_HOST_USER
-    recipient_list = [customer_email]
+    recipient_list = [reservation.guest.email]
 
     try:
-        generate_invoice(customer_name, room_type, price, days, checkin_date, checkout_date)
+        generate_invoice(
+            reservation.guest.name,
+            reservation.room.type,
+            price,
+            days,
+            datetime.today().date(),
+            reservation.booked_to.date(),
+        )
 
         # send_mail(subject, message, from_email, recipient_list)
         mail = EmailMessage(subject=subject, body=message, from_email=from_email, to=recipient_list)
@@ -307,28 +312,11 @@ def checkin_send_email(request):
 
         mail.send()
 
-        # reservation = Reservation.objects.get(uuid=uuid)
+        reservation.status = ReservationStatus.booked
+        reservation.payment_method = "UPI / Online Payment"
 
-        # # Update the status to "Booked" using the ReservationStatus class
-        # reservation.status = ReservationStatus.booked
+        reservation.save()
 
-        # # Save the changes to the database
-        # reservation.save()
-
-        # resv = Reservation(
-        #     guest=User.objects.get(request.GET.get('guest')),
-        #     status = ReservationStatus.booked
-        # )
-
-        # resv.save()
-
-        request.session.pop("customer_name")
-        request.session.pop("customer_email")
-        request.session.pop("checkin_date")
-        request.session.pop("checkout_date")
-        request.session.pop("room_type")
-        request.session.pop("price")
-        request.session.pop("days")
         print("email sent")
 
         message = "Thanks a bunch for booking at our hotel. It means a lot to us, just like you do! "
@@ -339,31 +327,29 @@ def checkin_send_email(request):
         return render(request, "Error.html", {"message": e})
 
 
-def send_refund_email(request):
-    customer_name = request.session.get("customer_name")
-    customer_email = request.session.get("customer_email")
-    checkin_date = request.session.get("checkin_date")
-    checkout_date = request.session.get("checkout_date")
-    room_type = request.session.get("room_type")
-    price = request.session.get("price")
-    days = request.session.get("days")
+def send_refund_email(request, uuid):
+    reservation = Reservation.objects.get(uuid=uuid)
 
-    booking_till_str = str(checkout_date)
+    price = reservation.room.price
+
+    booking_till_str = str(reservation.booked_to.date())
     early_checkout_date_str = str(datetime.today().date())
 
-    booking_till = datetime.strptime(booking_till_str, "%Y-%m-%d")
-    early_checkout_date = datetime.strptime(early_checkout_date_str, "%Y-%m-%d")
+    # booking_till = datetime.strptime(booking_till_str, "%Y-%m-%d")
+    # early_checkout_date = datetime.strptime(early_checkout_date_str, "%Y-%m-%d")
 
-    date_difference = booking_till - early_checkout_date
-    daysleft = date_difference.days
+    # date_difference = booking_till - early_checkout_date
+    # daysleft = date_difference.days
     # paidAmount = ''
-    refundAmount = daysleft * price
+    refundAmount = reservation.payment_amount
+
+    days = (reservation.booked_to - reservation.booked_from).days
 
     subject = "Booking Cancelled"
     message = f"""<strong>We wanted to confirm that we have received your request to cancel your reservation with us.
                 We understand that sometimes plans change, and we're here to assist you with this process.<br><br>
                 Here are the details of your canceled reservation: <br><br>
-                Customer Name: {customer_name}<br>
+                Customer Name: {reservation.guest.name}<br>
                 Reservation Till: {booking_till_str}<br>
                 Cancellation Date: {early_checkout_date_str}<br>
                 Refund Amount: {refundAmount}<br><br>
@@ -378,17 +364,16 @@ def send_refund_email(request):
                 """
 
     from_email = settings.EMAIL_HOST_USER
-    recipient_list = [customer_email]
+    recipient_list = [reservation.guest.email]
 
     try:
         generate_invoice_earlycheckout(
-            customer_name,
-            room_type,
+            reservation.guest.name,
+            reservation.room.type,
             price,
             days,
-            checkin_date,
-            checkout_date,
-            daysleft,
+            reservation.booked_from.date(),
+            reservation.booked_to.date(),
             refundAmount,
             early_checkout_date_str,
         )
@@ -399,15 +384,11 @@ def send_refund_email(request):
 
         mail.send()
 
-        print("refund email sent")
+        reservation.status = ReservationStatus.cancelled
 
-        request.session.pop("customer_name")
-        request.session.pop("customer_email")
-        request.session.pop("checkin_date")
-        request.session.pop("checkout_date")
-        request.session.pop("room_type")
-        request.session.pop("price")
-        request.session.pop("days")
+        reservation.save()
+
+        print("refund email sent")
 
         message = "Your reservation has been Cancelled Early!! "
 
@@ -418,12 +399,14 @@ def send_refund_email(request):
         return render(request, "Error.html", {"message": message})
 
 
-def checkout_email(request):
-    user_email = "ujjwalj12222@gmail.com"
+def checkout_email(request, uuid):
+    reservation = Reservation.objects.get(uuid=uuid)
 
-    booking_date_str = "2023-11-05"
+    user_email = reservation.guest.email
+
+    booking_date_str = str(reservation.booked_from.date())
     checkout_date_str = str(datetime.today().date())
-    price = 2000
+    price = reservation.room.price
 
     booking_date = datetime.strptime(booking_date_str, "%Y-%m-%d")
     checkout_date = datetime.strptime(checkout_date_str, "%Y-%m-%d")
@@ -433,14 +416,14 @@ def checkout_email(request):
 
     paidAmount = totalDays * price
 
-    customer_name = "Ujjwal Jamuar"
+    customer_name = reservation.guest.name
 
     subject = "Checkout Confirmed"
     message = f"""<strong>Dear {customer_name}, <br><br>
                 We hope you have had a pleasant stay with us at Bloom Stays, and we appreciate your choice in selecting our hotel for your accommodation.
                 We are writing to confirm that your check-out has been successfully processed. <br>
                 Here are the details of your check-out: <br><br>
-                Check-Out Date: {checkout_date} <br><br>
+                Check-Out Date: {checkout_date.date()} <br><br>
                 Total Paid-Amount - {paidAmount} <br><br>
                 Final Bill: Your final bill has been settled with the payment method provided during your check-in, and all charges, including room charges, taxes, and any additional expenses, have been accurately reflected in the bill. <br>
                 We trust that you found your stay comfortable and that our services met your expectations.
@@ -459,6 +442,10 @@ def checkout_email(request):
 
     try:
         send_mail(subject, "", from_email, recipient_list, html_message=message)
+        reservation.checked_out_at = datetime.now()
+        reservation.status = ReservationStatus.checked_out
+
+        reservation.save()
         print("email sent")
         message = "Checkout Confirmed."
         return render(request, "Thankyou.html", {"message": message})

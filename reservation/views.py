@@ -13,7 +13,9 @@ from .models import Reservation, ReservationStatus
 @auth()
 def view_reservation(request):
     user_reservations = Reservation.objects.filter(guest=request.user).order_by("booked_on")
-    return render(request, "view.html", {"reservations": user_reservations, "ReservationStatus": ReservationStatus})
+    return render(
+        request, "reservation/view.html", {"reservations": user_reservations, "ReservationStatus": ReservationStatus}
+    )
 
 
 # Cancels reservations if user is logged in and validated.
@@ -33,7 +35,7 @@ def cancel_reservation(request, uuid):
 @auth()
 def new_reservation(request):
     if request.method == "GET":
-        return render(request, "new.html")
+        return render(request, "reservation/new.html")
 
     elif request.method == "POST":
         start_datetime_str = request.POST.get("checkIn")
@@ -54,7 +56,7 @@ def new_reservation(request):
 
         return render(
             request,
-            "new.html",
+            "reservation/new.html",
             {"room_type_counts": available_rooms_count, "checkIn": start_datetime_str, "checkOut": end_datetime_str},
         )
 

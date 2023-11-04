@@ -307,6 +307,21 @@ def checkin_send_email(request):
 
         mail.send()
 
+        # reservation = Reservation.objects.get(uuid=uuid)
+
+        # # Update the status to "Booked" using the ReservationStatus class
+        # reservation.status = ReservationStatus.booked
+
+        # # Save the changes to the database
+        # reservation.save()
+
+        # resv = Reservation(
+        #     guest=User.objects.get(request.GET.get('guest')),
+        #     status = ReservationStatus.booked
+        # )
+
+        # resv.save()
+
         request.session.pop("customer_name")
         request.session.pop("customer_email")
         request.session.pop("checkin_date")
@@ -347,9 +362,10 @@ def send_refund_email(request):
     subject = "Booking Cancelled"
     message = f"""<strong>We wanted to confirm that we have received your request to cancel your reservation with us.
                 We understand that sometimes plans change, and we're here to assist you with this process.<br><br>
-                Here are the details of your canceled reservation: <br>Reservation ID: [Reservation ID]<br>Customer Name: {customer_name}<br>
-                Reservation Date: {booking_till_str}<br>
-                Cancellation Date: {early_checkout_date}<br>
+                Here are the details of your canceled reservation: <br><br>
+                Customer Name: {customer_name}<br>
+                Reservation Till: {booking_till_str}<br>
+                Cancellation Date: {early_checkout_date_str}<br>
                 Refund Amount: {refundAmount}<br><br>
                 If you have any questions or require any further assistance regarding your cancellation or potential rebooking,
                 please don't hesitate to contact our customer service team at [Customer Service Email] or [Customer Service Phone Number].

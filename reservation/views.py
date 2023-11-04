@@ -35,18 +35,10 @@ def cancel_reservation(request, uuid):
     request.session["price"] = resv.room.price
     request.session["days"] = (resv.booked_to - resv.booked_from).days
 
-    # print(str(resv.booked_from.date()))
-    # print(type(str(resv.booked_from.date())))
-    # print(resv.booked_to.date())
-    # print(type(resv.booked_to.date()))
-    # print((resv.booked_to - resv.booked_from).days)
-    # print(type((resv.booked_to - resv.booked_from).days))
-
     resv.cancel()
     messages.success(request, "Reservation cancelled successfully.")
 
     return redirect("/emailapp/earlycancel")
-    # return redirect('/dashboard')
 
 
 @auth()
@@ -118,7 +110,7 @@ def book_room(request):
                 booked_to=end_datetime,
                 room=room,
                 payment_amount=no_of_days * room.price,
-                status=ReservationStatus.booked_payment_due,
+                status=ReservationStatus.booked,
             )
 
             room.save()
@@ -132,7 +124,6 @@ def book_room(request):
             request.session["price"] = room.price
             request.session["days"] = no_of_days
 
-            # return redirect("/reservation/view")
             return redirect("/emailapp/checkin")
         else:
             messages.error(request, "Please fill in all the details ...")

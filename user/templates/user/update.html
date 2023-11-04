@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-  New Reservation
+  Update Profile
 {% endblock title %}
 {% block css %}
   {{ block.super }}
@@ -29,6 +29,7 @@
           <input type="password"
                  class="form-control"
                  name="password"
+                 value="{{ user.password }}"
                  placeholder="Enter your new password">
         </div>
         <div class="mb-3">
@@ -36,7 +37,7 @@
           <input type="date"
                  class="form-control"
                  name="DateOfBirth"
-                 value="{{ user.date_of_birth }}">
+                 value="{{ date_of_birth }}">
         </div>
         <div class="mb-3">
           <label for="phoneNumber" class="form-label">Phone Number</label>

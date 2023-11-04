@@ -1,5 +1,6 @@
 # Create your views here.
-from django.shortcuts import HttpResponse, redirect, render
+from django.contrib import messages
+from django.shortcuts import redirect, render
 
 from authentication.logic import auth
 from user.models import User
@@ -9,8 +10,19 @@ from user.models import User
 def update_profile(request):
     if request.method == "GET":
         if request.user:
-            return render(request, "update.html", {"user": request.user})
-        return HttpResponse("<h3>direct access forbidden</h3>")
+            return render(
+                request,
+                "user/update.html",
+                {
+                    "user": request.user,
+                    "date_of_birth": request.user.date_of_birth.strftime("%Y-%m-%d")
+                    if request.user.date_of_birth
+                    else "",
+                },
+            )
+
+        messages.error(request, "You are not authorized to view this page.")
+        return redirect("/dashboard")
 
     elif request.method == "POST":
         return update_profile_logic(request)
@@ -19,9 +31,14 @@ def update_profile(request):
 @auth()
 def view_profile(request):
     if request.user:
-        return render(request, "view.html", {"user": request.user})
+        return render(
+            request,
+            "user/view.html",
+            {"user": request.user, "date_of_birth": request.user.date_of_birth.strftime("%Y-%m-%d")},
+        )
 
-    return HttpResponse("<h3>direct access forbidden</h3>")
+    messages.error(request, "You are not authorized to view this page.")
+    return redirect("/dashboard")
 
 
 @auth(by_pass_route=True)
@@ -35,9 +52,11 @@ def update_profile_logic(request):
         "address": request.POST["Address"],
     }
 
-    for key, value in data.items():
+    for value in data.values():
         if not value:
+            messages.error(request, "Please fill all the fields.")
             return redirect("/user/update")
 
     User(**data).save()
-    return redirect("/dashboard")
+    messages.success(request, "Profile updated successfully.")
+    return redirect("/user/view")

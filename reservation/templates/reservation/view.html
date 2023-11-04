@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-  Reservation History
+  My Reservations
 {% endblock title %}
 {% block content %}
+  {% if not reservations %}<div class="alert alert-warning" role="alert">You have no reservations yet.</div>{% endif %}
   {% for reservation in reservations %}
     <div class="card text-center" style="margin: 20px;">
       <div class="card-header">

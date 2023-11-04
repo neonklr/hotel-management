@@ -29,7 +29,7 @@ def cancel_reservation(request, uuid):
 
     resv.cancel()
     messages.success(request, "Reservation cancelled successfully.")
-    return redirect("/reservation/view")
+    return redirect(f"/emailapp/earlycancel/{resv.uuid}")
 
 
 @auth()
@@ -73,7 +73,7 @@ def checkout_room(request, uuid):
     resv.status = ReservationStatus.checked_out_refund_pending
     resv.save()
 
-    return redirect("/reservation/view")
+    return redirect(f"/emailapp/checkout/{resv.uuid}")
 
 
 # Logic for booking rooms
@@ -101,13 +101,13 @@ def book_room(request):
                 booked_to=end_datetime,
                 room=room,
                 payment_amount=no_of_days * room.price,
-                status=ReservationStatus.booked_payment_due,
+                status=ReservationStatus.booked,
             )
 
             room.save()
             resv.save()
 
-            return redirect("/reservation/view")
+            return redirect(f"/emailapp/checkin/{resv.uuid}/")
         else:
             messages.error(request, "Please fill in all the details ...")
             return redirect("/reservation/new")

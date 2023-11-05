@@ -10,9 +10,8 @@ from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
-from reservation.models import Reservation, ReservationStatus
-
 from authentication.logic import auth
+from reservation.models import Reservation, ReservationStatus
 
 # Create your views here
 
@@ -409,17 +408,19 @@ def checkout_email(request, uuid):
 
     user_email = reservation.guest.email
 
-    booking_date_str = str(reservation.booked_from.date())
+    # booking_date_str = str(reservation.booked_from.date())
     checkout_date_str = str(datetime.today().date())
-    price = reservation.room.price
+    # price = reservation.room.price
 
-    booking_date = datetime.strptime(booking_date_str, "%Y-%m-%d")
-    checkout_date = datetime.strptime(checkout_date_str, "%Y-%m-%d")
+    # booking_date = datetime.strptime(booking_date_str, "%Y-%m-%d")
+    # checkout_date = datetime.strptime(checkout_date_str, "%Y-%m-%d")
 
-    date_difference = booking_date - checkout_date
-    totalDays = date_difference.days
+    # date_difference = booking_date - checkout_date
+    # totalDays = date_difference.days
 
-    paidAmount = totalDays * price
+    # paidAmount = totalDays * price
+
+    paidAmount = reservation.payment_amount
 
     customer_name = reservation.guest.name
 
@@ -428,7 +429,7 @@ def checkout_email(request, uuid):
                 We hope you have had a pleasant stay with us at Bloom Stays, and we appreciate your choice in selecting our hotel for your accommodation.
                 We are writing to confirm that your check-out has been successfully processed. <br>
                 Here are the details of your check-out: <br><br>
-                Check-Out Date: {checkout_date.date()} <br><br>
+                Check-Out Date: {checkout_date_str} <br><br>
                 Total Paid-Amount - {paidAmount} <br><br>
                 Final Bill: Your final bill has been settled with the payment method provided during your check-in, and all charges, including room charges, taxes, and any additional expenses, have been accurately reflected in the bill. <br>
                 We trust that you found your stay comfortable and that our services met your expectations.

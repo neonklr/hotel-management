@@ -270,7 +270,7 @@ def checkin_send_email(request, uuid):
                 We are delighted to confirm your upcoming check-in at Bloom Stays on {reservation.booked_from}. We look forward to providing you with a comfortable and enjoyable stay. <br>
                 Here are the details of your reservation: <br><br>
                 Booking Date: {datetime.today().date()} <br>
-                Check-Out Date: {reservation.booked_to} <br>
+                Check-Out Date: {reservation.booked_to.date()} <br>
                 Room Type: {reservation.room.type} <br>
                 Number of Days: {days} <br>
                 Price: {price} <br><br>

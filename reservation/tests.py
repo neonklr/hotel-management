@@ -1,11 +1,9 @@
 # Create your tests here.
 
-from datetime import datetime
 
 from django.test import Client, TestCase
 
-from authentication.logic import hash_password
-from user.models import User
+from helper.tests import login_user
 
 from .models import Room
 
@@ -24,21 +22,9 @@ class TestViewReservationPage(TestCase):
         self.assertTemplateUsed(response, "get_started/index.html")
 
     def test_page_when_logged_in(self):
-        User.objects.create(
-            name="test",
-            email="test@example.com",
-            password=hash_password("password"),
-            address="address",
-            phone_number=123,
-            date_of_birth=datetime.now(),
-        )
-
-        self.client.post("/auth/login/", {"email": "test@example.com", "password": "password"}, follow=True)
-
-        response = self.client.get("/reservation/view/")
-        self.assertEqual(response.status_code, 200)
-
-        self.client.get("/auth/logout/")
+        with login_user(self.client):
+            response = self.client.get("/reservation/view/")
+            self.assertEqual(response.status_code, 200)
 
 
 class TestNewReservationPage(TestCase):
@@ -53,54 +39,30 @@ class TestNewReservationPage(TestCase):
         )
 
     def test_page_when_logged_in(self):
-        User.objects.create(
-            name="test",
-            email="test@example.com",
-            password=hash_password("password"),
-            address="address",
-            phone_number=123,
-            date_of_birth=datetime.now(),
-        )
-
-        self.client.post("/auth/login/", {"email": "test@example.com", "password": "password"}, follow=True)
-
-        response = self.client.get("/reservation/new/")
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "reservation/new.html")
-
-        self.client.get("/auth/logout/")
+        with login_user(self.client):
+            response = self.client.get("/reservation/new/")
+            self.assertEqual(response.status_code, 200)
+            self.assertTemplateUsed(response, "reservation/new.html")
 
 
 class TestNewReservation(TestCase):
     def setUp(self):
         Room.objects.create(type="Delux", no=1, price=100)
 
-        User.objects.create(
-            name="test",
-            email="test@example.com",
-            password=hash_password("password"),
-            address="address",
-            phone_number=123,
-            date_of_birth=datetime.now(),
-        )
-
         self.client = Client()
 
     def test_new_reservation(self):
-        self.client.post("/auth/login/", {"email": "test@example.com", "password": "password"}, follow=True)
+        with login_user(self.client):
+            response = self.client.post(
+                "/reservation/new/",
+                {
+                    "roomType": "Delux",
+                    "checkIn": "2024-01-01",
+                    "checkOut": "2024-01-02",
+                },
+                follow=True,
+            )
 
-        response = self.client.post(
-            "/reservation/new/",
-            {
-                "roomType": "Delux",
-                "checkIn": "2024-01-01",
-                "checkOut": "2024-01-02",
-            },
-            follow=True,
-        )
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "reservation/new.html")
-        self.assertContains(response, "Delux")
-
-        self.client.get("/auth/logout/")
+            self.assertEqual(response.status_code, 200)
+            self.assertTemplateUsed(response, "reservation/new.html")
+            self.assertContains(response, "Delux")

@@ -14,8 +14,6 @@ def calculate_available_rooms(start_time, end_time):
         & Q(status__in=[ReservationStatus.booked, ReservationStatus.booked_payment_due, ReservationStatus.checked_in])
     ).values_list("room", flat=True)
 
-    print(conflicting_rooms)
-
     for room in Room.objects.all():
         if room.no in conflicting_rooms:
             continue

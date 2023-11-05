@@ -17,8 +17,8 @@ def signup(request):
         password = request.POST.get("user_password")
         repass = request.POST.get("repass")
 
-        if not password:
-            messages.error(request, "Password cannot be empty")
+        if not (password and email and repass):
+            messages.error(request, "Fields cannot be empty")
             return redirect("/get_started#signup-tab-content")
 
         if not password == repass:
@@ -41,9 +41,13 @@ def login(request):
 
     if request.method == "POST":
         email = request.POST["email"]
-        password = logic.hash_password(request.POST["password"])
+        password = request.POST["password"]
 
-        user = User.objects.filter(email=email).filter(password=password).first()
+        if not (password and email):
+            messages.error(request, "Fields cannot be empty")
+            return redirect("/get_started#login-tab-content")
+
+        user = User.objects.filter(email=email).filter(password=logic.hash_password(password)).first()
 
         if user:
             logic.set_session_data(request, "login_token", email)

@@ -86,7 +86,7 @@ def book_room(request):
             request.POST.get("checkIn"), request.POST.get("checkOut")
         )
 
-        room = logic.calculate_available_rooms(start_datetime, end_datetime)[roome_type][0]
+        room = logic.calculate_available_rooms(start_datetime, end_datetime)[roome_type].pop()
 
         no_of_days = (end_datetime - start_datetime).days
 

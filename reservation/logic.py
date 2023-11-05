@@ -1,21 +1,29 @@
 from datetime import datetime
 
-from .models import Reservation, Room
+from django.db.models import Q
+
+from .models import Reservation, ReservationStatus, Room
 
 
 def calculate_available_rooms(start_time, end_time):
     available_rooms = {}
 
-    for room in Room.objects.all():
-        conflicting_reservations = Reservation.objects.filter(
-            room=room, booked_from__lt=end_time, booked_to__gt=start_time
-        )
+    conflicting_rooms = Reservation.objects.filter(
+        Q(booked_from__lt=end_time)
+        & Q(booked_to__gt=start_time)
+        & Q(status__in=[ReservationStatus.booked, ReservationStatus.booked_payment_due, ReservationStatus.checked_in])
+    ).values_list("room", flat=True)
 
-        if not conflicting_reservations.exists():
-            if available_rooms.get(room.type) is None:
-                available_rooms[room.type] = [room]
-            else:
-                available_rooms[room.type].append(room)
+    print(conflicting_rooms)
+
+    for room in Room.objects.all():
+        if room.no in conflicting_rooms:
+            continue
+
+        if available_rooms.get(room.type) is None:
+            available_rooms[room.type] = set([room])
+        else:
+            available_rooms[room.type].add(room)
 
     return available_rooms
 

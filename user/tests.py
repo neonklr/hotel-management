@@ -4,6 +4,8 @@ from datetime import datetime
 
 from django.test import Client, TestCase
 
+from authentication.logic import hash_password
+
 from .models import User
 
 
@@ -22,7 +24,7 @@ class TestViewProfilePage(TestCase):
         User.objects.create(
             name="test",
             email="test@example.com",
-            password="password",
+            password=hash_password("password"),
             address="address",
             phone_number=123,
             date_of_birth=datetime.now(),
@@ -35,6 +37,7 @@ class TestViewProfilePage(TestCase):
         self.assertContains(response, "test")
         self.assertContains(response, "test@example.com")
         self.assertContains(response, "Update My Profile")
+        self.assertTemplateUsed(response, "user/view.html")
 
         self.client.get("/auth/logout/")
 
@@ -54,7 +57,7 @@ class TestUpdateProfilePage(TestCase):
         User.objects.create(
             name="test",
             email="test@example.com",
-            password="password",
+            password=hash_password("password"),
             address="address",
             phone_number=123,
             date_of_birth=datetime.now(),
@@ -67,6 +70,7 @@ class TestUpdateProfilePage(TestCase):
         self.assertContains(response, "test")
         self.assertContains(response, "test@example.com")
         self.assertContains(response, "Update Profile")
+        self.assertTemplateUsed(response, "user/update.html")
 
         self.client.get("/auth/logout/")
 

@@ -4,6 +4,7 @@ from datetime import datetime
 
 from django.test import Client, TestCase
 
+from authentication.logic import hash_password
 from user.models import User
 
 
@@ -39,7 +40,7 @@ class TestGetStartedPage(TestCase):
         User.objects.create(
             name="test",
             email="test@example.com",
-            password="password",
+            password=hash_password("password"),
             address="address",
             phone_number=123,
             date_of_birth=datetime.now(),
@@ -52,5 +53,7 @@ class TestGetStartedPage(TestCase):
         self.assertRedirects(
             response, "/dashboard/", status_code=302, target_status_code=200, fetch_redirect_response=True
         )
+
+        self.assertTemplateUsed(response, "dashboard/dashboard.html")
 
         self.client.get("/auth/logout/")

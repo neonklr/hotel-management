@@ -1,5 +1,11 @@
 # Project Hotel Management
 
+
+![Hotel Management](https://github.com/neonklr/hotel-management/assets/55053464/9c152b08-1410-4ec5-878e-77eecbfefa42)
+
+![Hotel Management](https://github.com/neonklr/hotel-management/assets/55053464/e5213777-8051-4ce1-9f71-10dd9282c1d5)
+
+
 ## Setup
 
 You can choose any of the following methods to setup the project.
@@ -37,3 +43,23 @@ _Note :- this requires you to have [docker](https://www.docker.com/) and [vscode
 4. Select `Reopen in Container`
 5. Wait for the devcontainer to build
 6. Run either of method 1, 2 or 3 to install the dependencies (Recommended is method 3)
+
+
+
+## Run this project
+
+Note :- if you dont have virtual environment activated and are using `poetry` then add a prefix `poetry run` before the following commands
+
+1. complete setting up project on local environment
+2. run `python manage.py migrate`
+3. run `python manage.py runserver`
+
+optionally, if you want to create a super user (admin user) to access admin dashboard present at `/admin` then run `python manage.py createsuperuser`
+
+
+## Running tests for the project
+
+Note :- if you dont have virtual environment activated and are using `poetry` then append `poetry run ` before the following commands
+
+1. run `coverage run --source='.' manage.py test`
+2. run `coverage report` to get report of the coverage test we just ran

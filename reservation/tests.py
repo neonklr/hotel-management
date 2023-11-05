@@ -4,8 +4,9 @@
 from django.test import Client, TestCase
 
 from helper.tests import login_user
+from user.models import User
 
-from .models import Room
+from .models import Reservation, ReservationStatus, Room
 
 
 class TestViewReservationPage(TestCase):
@@ -66,3 +67,28 @@ class TestNewReservation(TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertTemplateUsed(response, "reservation/new.html")
             self.assertContains(response, "Delux")
+
+
+class TestReservationModel(TestCase):
+    def setUp(self) -> None:
+        self.room = Room.objects.create(type="Delux", no=1, price=100)
+        self.guest = User.objects.create(email="test@example.com", password="test")
+        Reservation.objects.create(
+            guest=User.objects.get(email="test@example.com"),
+            room=Room.objects.get(no=1),
+            booked_from="2024-01-01",
+            booked_to="2024-01-02",
+            payment_method="Cash",
+            payment_amount=100,
+            booked_on="2024-01-01",
+        )
+
+    def test_object_exists(self):
+        self.assertTrue(Reservation.objects.exists())
+
+    def test_cancel(self):
+        reservation = Reservation.objects.get(guest=self.guest)
+
+        reservation.cancel()
+
+        self.assertEqual(reservation.status, ReservationStatus.cancelled_refund_pending)
